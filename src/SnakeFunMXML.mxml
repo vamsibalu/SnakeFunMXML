@@ -2,10 +2,16 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:comps="comps.*">
-
+	<s:states>
+		<s:State name="loggedout"/>
+		<s:State name="loggedin"/>
+	</s:states>
 	<fx:Script>
 		<![CDATA[
+			import com.facebook.graph.Facebook;
+			
 			import mx.controls.Alert;
+			import mx.events.FlexEvent;
 			private function addListeners():void{
 				myinit.addEventListener("cc",joined)
 			}
@@ -13,6 +19,38 @@
 			private function joined(e:Event):void{
 				Alert.show("cliecked");
 			}
+			
+			protected function application1_creationCompleteHandler(event:FlexEvent):void{
+				Facebook.init("404922902864346",loginHandler);//425799344104438  //237205039668370
+				//Alert.show("ok");
+			}
+			protected function loginHandler(success:Object,fail:Object):void{
+				trace("loginHandler .",success)
+				if(success){
+					currentState="loggedin";
+					Facebook.api("/me",getMeHandler);	
+					userImg.source=Facebook.getImageUrl(success.uid,"small");
+					//Facebook.api("/me/statuses",getStatusHandler);
+				}else{
+					trace("not logged in...")
+				}
+			}
+			
+			protected function getMeHandler(result:Object,fail:Object):void{
+				nameLbl.text=result.name;
+			}
+			
+			protected function login():void{
+				Facebook.login(loginHandler,{scope:"user_birthday,read_stream,publish_stream"});
+			}
+			protected function logout():void{
+				Facebook.logout(logoutHandler);
+				currentState="loggedout";
+			}
+			
+			protected function logoutHandler(response:Object):void{
+			}
+			
 		]]>
 	</fx:Script>
 
@@ -38,7 +76,19 @@
 	</fx:Declarations>
 	
 	<!-- UI components ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<s:Button id="loginoutBtn" right="10" top="10" label="Log out"
+			  skinClass.loggedin="skins.FBLogoutButtonSkin"
+			  skinClass.loggedout="skins.FBLoginButtonSkin"
+			  click.loggedin="logout()"
+			  label.loggedout="Log in" click.loggedout="login()"/>
+	
+	<s:Form includeIn="loggedin" left="70" top="10">
+		<s:FormItem label="User">
+			<s:Label id="nameLbl"/>
+		</s:FormItem>
+	</s:Form>
 	<comps:InitScreen id="myinit" creationComplete="addListeners()">
 		
 	</comps:InitScreen>
+	<s:Image id="userImg" includeIn="loggedin" left="10" top="10" width="50"/>
 </s:Application>
