@@ -25,7 +25,7 @@ package com.controller
 		
 		public static const ATR_SS:String = "atrs";
 		
-		private var remote:Remote = Remote.getInstance();
+		private var remote:Remote;
 		private var board:Board;
 		public static var classCount:int = 0;
 		private var msgTime:Timer = new Timer(120);
@@ -36,6 +36,7 @@ package com.controller
 				throw new Error("Error:Only One Instance Allow Bala..Use MoveController.getInstance() instead of new.");
 			}
 			trace("dd2 creating remote");
+			remote = Remote.getInstance();
 			remote.addEventListener(Remote.SERVERREADY,serverReady);
 			remote.addEventListener(Remote.UPDATEUSERLIST,updateUserlist);
 			thisObj = this;
@@ -57,6 +58,7 @@ package com.controller
 		}
 		
 		private function serverReady(e:Event):void{
+			trace("fll serverReady in MsgController ROOM_NAME",ROOM_NAME);
 			remote.joinRoom(ROOM_NAME);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_SNAKEDATA,gotMessageForSnake);
 			remote.chatRoom.addMessageListener(CustomEvent.CHAT_MESSAGE,gotMessageForChat);
@@ -151,6 +153,7 @@ package com.controller
 		}
 		
 		private function updateUserlist(e:CustomEvent = null):void{
+			trace("board.userlist",board)
 			board.userlist.text = "";
 			for each (var client:IClient in remote.chatRoom.getOccupants()) {
 				board.userlist.appendText(remote.getUserName(client) + "\n");

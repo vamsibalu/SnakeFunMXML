@@ -28,7 +28,7 @@
 		<s:Form id="uname">
 			<s:FormItem label="Enter your Friend ChatRoomId" label.register="Enter your own room Id">
 				<s:HGroup autoLayout="true">
-					<s:TextInput/>
+					<s:TextInput id="roomName"/>
 					<s:Button id="jb" label="Join" label.register="Create and Join" click="joined(event)"/>
 				</s:HGroup>
 				

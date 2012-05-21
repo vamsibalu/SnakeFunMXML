@@ -27,13 +27,14 @@
 				myinitComp.addEventListener("cc",joined);
 			}
 			
-			private function addListeners2():void{
-				myBoardComp.addEventListener("cc",joined);
+			private function boardCreationComplete():void{
+				msgController = new MsgController(myBoardComp.board);
+				moveController = new MoveController(myBoardComp);
 			}
 			
 			private function joined(e:Event):void{
 				currentState = "joinedRoom";
-				Alert.show("cliecked");
+				MsgController.ROOM_NAME = myinitComp.roomName.text;
 			}
 			
 			protected function application1_creationCompleteHandler(event:FlexEvent):void{
@@ -42,8 +43,6 @@
 				trace("calling facebook init..",this);
 				Facebook.init("404922902864346",loginHandler);//425799344104438  //237205039668370
 				//Alert.show("ok");
-				msgController = new MsgController(myBoardComp.board);
-				moveController = new MoveController(myBoardComp);
 			}
 			protected function loginHandler(success:Object,fail:Object):void{
 				trace("loginHandler .",success)
@@ -110,7 +109,7 @@
 	</s:Form>
 	
 	<comps:InitScreen id="myinitComp" includeIn="loggedin" creationComplete="addListeners()"/>
-	<comps:BoardComp id="myBoardComp" includeIn="loggedin" creationComplete="addListeners2()"/>
+	<comps:BoardComp id="myBoardComp" includeIn="joinedRoom" creationComplete="boardCreationComplete()"/>
 	
 	<s:Image id="userImg" includeIn="loggedin" left="10" top="10" width="50"/>
 </s:Application>
