@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:comps="comps.*">
+			   xmlns:mx="library://ns.adobe.com/flex/mx" minWidth="955" minHeight="600" xmlns:comps="comps.*"
+			   creationComplete="application1_creationCompleteHandler(event)">
 	<s:states>
-		<s:State name="loggedout"/>
 		<s:State name="loggedin"/>
+		<s:State name="loggedout"/>
+		<s:State name="joinedRoom"/>
 	</s:states>
 	<fx:Script>
 		<![CDATA[
@@ -13,14 +15,18 @@
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			private function addListeners():void{
-				myinit.addEventListener("cc",joined)
+				myinitComp.addEventListener("cc",joined);
 			}
 			
 			private function joined(e:Event):void{
+				currentState = "joinedRoom";
 				Alert.show("cliecked");
 			}
 			
 			protected function application1_creationCompleteHandler(event:FlexEvent):void{
+				currentState = "loggedout";
+				currentState="loggedin";
+				trace("calling facebook init..");
 				Facebook.init("404922902864346",loginHandler);//425799344104438  //237205039668370
 				//Alert.show("ok");
 			}
@@ -87,8 +93,8 @@
 			<s:Label id="nameLbl"/>
 		</s:FormItem>
 	</s:Form>
-	<comps:InitScreen id="myinit" creationComplete="addListeners()">
-		
-	</comps:InitScreen>
+	
+	<comps:InitScreen id="myinitComp" includeIn="loggedin" creationComplete="addListeners()"/>
+	
 	<s:Image id="userImg" includeIn="loggedin" left="10" top="10" width="50"/>
 </s:Application>
