@@ -18,7 +18,7 @@ package com.view
 	import flash.ui.Keyboard;
 	
 	import mx.core.UIComponent;
-	
+	import mx.collections.ArrayCollection;
 	import net.user1.reactor.IClient;
 	import net.user1.reactor.RoomEvent;
 	
@@ -29,6 +29,11 @@ package com.view
 		public var allSnakes_vector:Vector.<Snake> = new Vector.<Snake>();
 		public static var thisObj:Board;
 		public static var IFirst:Boolean = false;
+		
+		[Bindable]             
+		public var usersData:ArrayCollection = new ArrayCollection([
+			{name:"bala1",img: 'images/Hydrangeas_1.png'},
+			{name:"bala2",img: 'images/Hydrangeas_1.png'}]);
 		
 		
 		public function Board(_base:SnakeFunMXML){

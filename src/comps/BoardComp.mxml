@@ -6,22 +6,19 @@
 	<fx:Script>
 		<![CDATA[
 			import com.view.Board;
-			
 			import mx.events.FlexEvent;
 			
-			
+			[Bindable]
 			public var board:Board;
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
-			{
+			protected function group1_creationCompleteHandler(event:FlexEvent):void{
 				trace("board creating this.parentApplication",this.parentApplication,this,this.stage);
 				board = new Board(this.parentApplication as SnakeFunMXML);
 				addElement(board);
-				// TODO Auto-generated method stub
 			}
-
 		]]>
 	</fx:Script>
 	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		<!-- Place non-visual elements (e.g., services, value objects) -->
 	</fx:Declarations>
+	<mx:List itemRenderer="comps.thumbs" dataProvider="{board.usersData}" depth="4"/>
 </s:Group>
