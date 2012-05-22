@@ -17,8 +17,9 @@ package com.view
 	import flash.text.TextField;
 	import flash.ui.Keyboard;
 	
-	import mx.core.UIComponent;
 	import mx.collections.ArrayCollection;
+	import mx.core.UIComponent;
+	
 	import net.user1.reactor.IClient;
 	import net.user1.reactor.RoomEvent;
 	
@@ -32,6 +33,7 @@ package com.view
 		
 		[Bindable]             
 		public var usersData:ArrayCollection = new ArrayCollection([
+			{name:"bala1",img: 'images/Hydrangeas_1.png'},
 			{name:"bala1",img: 'images/Hydrangeas_1.png'},
 			{name:"bala2",img: 'images/Hydrangeas_1.png'}]);
 		
@@ -62,9 +64,10 @@ package com.view
 				trace("dd1 iJoined_AddMySnake my name",mySnake.playerData.name);
 			}else{
 				var roomEvent:RoomEvent = RoomEvent(e.data2);
-				incomingMessages.appendText(Remote.getInstance().getUserName(roomEvent.getClient())+ " joined the chat.\n");
+				var nameee:String = roomEvent.getClient().getAttribute("username");
+				incomingMessages.appendText(nameee + " joined the chat.\n");
 				var tempPlayer:PlayerDataVO = new PlayerDataVO();
-				tempPlayer.name = Remote.getInstance().getUserName(roomEvent.getClient());
+				tempPlayer.name = nameee;
 				addNewSnake(tempPlayer);
 				trace("dd1 somebody joined his name=",tempPlayer.name);
 				//update my snake so he know about me...
@@ -112,28 +115,6 @@ package com.view
 			return tempRemoteSnake;
 		}
 		
-		/*private function updateSnakeQuantity(e:CustomEvent):void{
-		var ary:Array = Remote.getInstance().chatRoom.getOccupants();
-		trace("dd1 updateSnakeQuantity",ary)
-		for each (var client:IClient in ary) {
-		var namee:String = Remote.getInstance().getUserName(client);
-		var tempPlayer:PlayerDataVO;
-		if(allSnakes_vector.length > 0){
-		var alreadyExists:Boolean = false;
-		for(var i:int = 0; i<allSnakes_vector.length; i++){
-		if(allSnakes_vector[i].playerData.name == namee){
-		alreadyExists = true;
-		break;
-		}
-		}
-		if(alreadyExists == false){
-		tempPlayer = new PlayerDataVO();
-		tempPlayer.name = namee;
-		addNewSnake(tempPlayer);
-		}
-		}
-		}
-		}*/
 		//msgController
 		public function updateSnakeName(oldN:String,newN:String):void{
 			for(var i:int = 0; i<allSnakes_vector.length; i++){
@@ -149,7 +130,7 @@ package com.view
 		// User interface objects
 		public var incomingMessages:TextField;
 		public var outgoingMessages:TextField;
-		public var userlist:TextField;
+		//public var userlist:TextField;
 		public var nameInput:TextField;
 		public static var TXT:Object = new Object();
 		private function makeDummyUI():void{
@@ -160,9 +141,7 @@ package com.view
 			TXT.b = outgoingMessages;
 			// Keyboard listener for outgoingMessages
 			outgoingMessages.addEventListener(KeyboardEvent.KEY_UP, keyUpListener);
-			userlist = UIObj.creatTxt(tempSp,89,200,400);
 			nameInput = UIObj.creatTxt(tempSp,100,20,10,340);
-			nameInput.addEventListener(KeyboardEvent.KEY_UP,Remote.getInstance().nameKeyUpListener);
 			addChild(tempSp);
 		}
 		
