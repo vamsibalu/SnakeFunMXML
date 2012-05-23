@@ -16,8 +16,8 @@
 			public override function set data(value:Object):void{
 				if(value){
 					super.data = value;
-					img.source = value.img;
-					lblData.text = value.nm;
+					img.source = value.uimg;
+					lblData.text = value.unm;
 				}
 			}
 		]]>

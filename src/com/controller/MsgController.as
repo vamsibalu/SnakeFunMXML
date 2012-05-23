@@ -25,6 +25,7 @@ package com.controller
 		public static const ABOUT_DIRECTION:String = "abdrct";
 		public static const CHAT_MESSAGE:String = "chtmsg";
 		public static var ROOM_NAME:String = "tempwithmdu";
+		public static const RESET_TIMER:String = "tm";
 		
 		public static const ATR_SS:String = "atsnk";
 		
@@ -56,6 +57,8 @@ package com.controller
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_SNAKEDATA,gotMessageForSnake);
 			remote.chatRoom.addMessageListener(CustomEvent.CHAT_MESSAGE,gotMessageForChat);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_DIRECTION,gotMessageForDirections);
+			remote.chatRoom.addMessageListener(MsgController.RESET_TIMER,board.resetSnakeTime);
+			
 			remote.chatRoom.addEventListener(RoomEvent.UPDATE_CLIENT_ATTRIBUTE,updateClientAttributeListener);
 			remote.addEventListener(Remote.SUMBODY_LEFT,somebodyLeft);
 		}
@@ -131,12 +134,17 @@ package com.controller
 			var ary:Array = [];
 			for each (var client:IClient in remote.chatRoom.getOccupants()) {
 				var namee:String = client.getAttribute("unm");
-				var imgg:String = 'images/Hydrangeas_1.png';
+				var idd:String = client.getAttribute("uid");
+				var imgg:String = 'images/'+client.getAttribute("uimg")+'.png';
 				trace("fll name",namee)
-				var obj:Object = {nm:namee,img:imgg};
+				var obj:Object = {unm:namee,uid:idd,uimg:imgg};
 				ary.push(obj);
 			}
 			board.usersData = new ArrayCollection(ary);
+		}
+		
+		public function resetTimerOnRemote():void{
+			remote.chatRoom.sendMessage(MsgController.RESET_TIMER,true,null,MsgController.RESET_TIMER);
 		}
 		
 		private function somebodyLeft(event:CustomEvent):void{

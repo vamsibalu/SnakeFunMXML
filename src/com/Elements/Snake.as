@@ -23,7 +23,7 @@ package com.Elements
 		//DO NOT GIVE THEM A VALUE HERE! Give them a value in the init() function
 		public var snake_vector:Vector.<Element>; //the snake's parts are held in here and visible to Board bala
 		public var markers_vector:Vector.<Object>; //the markers are held in here bala
-		private var timer:Timer; 
+		public var timer:Timer;//for sync to Remote Time on Board
 		private var dead:Boolean;
 		private var min_elements:int; //holds how many parts should the snake have at the beginning
 		//private var apple:Element; //Our apple
@@ -80,7 +80,7 @@ package com.Elements
 			//placeApple(false);  //for 1st time board will add
 			timer.addEventListener(TimerEvent.TIMER,moveIt);
 			//stage.addEventListener(KeyboardEvent.KEY_DOWN,directionChanged);
-			//timer.start();
+			timer.start();
 		}
 		
 		//for remoteSnake to use xml data

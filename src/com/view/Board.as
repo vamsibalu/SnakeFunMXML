@@ -54,7 +54,7 @@ package com.view
 			//add my snake;
 			if(e.data is PlayerDataVO){
 				Remote.getInstance().setMyFBData(baseMXML.myFBookName,baseMXML.myFBookID,baseMXML.myFBookIMG);
-				Remote.getInstance().chatRoom.sendMessage("justUpdate",false,null,"justit");
+				Remote.getInstance().chatRoom.sendMessage("justUpdate",true,null,"justit");
 				mySnake = new MySnake();
 				mySnake.playerData = e.data;
 				mySnake.addEventListener(MySnake.I_GOT_FOOD,MoveController.getInstance().tellToController_MYSnakeGotFood);
@@ -94,6 +94,10 @@ package com.view
 			}
 		}
 		
+		public function resetSnakeTime(fromClient:IClient,messageText:String):void {
+			mySnake.timer.reset();
+			mySnake.timer.start();
+		}
 		//call from msgController for first time by First Hero
 		public function placeFood_ByRemote (fromClient:IClient=null,messageText:String=""):void {
 			//placeApple(mySnake.snake_vector);
