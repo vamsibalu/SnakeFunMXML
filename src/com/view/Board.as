@@ -32,10 +32,7 @@ package com.view
 		public static var IFirst:Boolean = false;
 		
 		[Bindable]             
-		public var usersData:ArrayCollection = new ArrayCollection([
-			{name:"bala1",img: 'images/Hydrangeas_1.png'},
-			{name:"bala1",img: 'images/Hydrangeas_1.png'},
-			{name:"bala2",img: 'images/Hydrangeas_1.png'}]);
+		public var usersData:ArrayCollection;
 		
 		
 		public function Board(_base:SnakeFunMXML){

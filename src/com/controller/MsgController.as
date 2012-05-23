@@ -13,6 +13,7 @@ package com.controller
 	import flash.utils.Timer;
 	
 	import mx.collections.ArrayCollection;
+	import mx.utils.ObjectProxy;
 	
 	import net.user1.reactor.Attribute;
 	import net.user1.reactor.IClient;
@@ -156,13 +157,14 @@ package com.controller
 		
 		private function updateUserlist(e:CustomEvent = null):void{
 			trace("fll updateUserlist",board);
-			board.usersData = ArrayCollection([]);
+			var ary:Array = [];
 			for each (var client:IClient in remote.chatRoom.getOccupants()) {
 				//board.userlist.appendText(client.getAttribute("username") + "\n");
 				var obj:Object = {name:client.getAttribute("username"),img: 'images/Hydrangeas_1.png'};
-				board.usersData.addItem(obj);
+				ary.push(new ObjectProxy(obj));
 				//trace("ddd client=",client)
 			}
+			board.usersData = new ArrayCollection(ary);
 		}
 		
 		private function somebodyLeft(event:CustomEvent):void{
