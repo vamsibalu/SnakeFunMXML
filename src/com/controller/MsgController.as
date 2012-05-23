@@ -65,20 +65,20 @@ package com.controller
 		}
 		
 		protected function gotMessageForDirections(fromClient:IClient,messageText:String):void {
-			MoveController.getInstance().tellToController_GotDirections(fromClient.getAttribute("username"),messageText);
+			MoveController.getInstance().tellToController_GotDirections(fromClient.getAttribute("unm"),messageText);
 		}
 		
 		protected function gotMessageForSnake(fromClient:IClient,messageText:String):void {
 			trace("dd1 Remote got messageText1=",messageText);
 			var tempPlayer:PlayerDataVO = new PlayerDataVO();
 			tempPlayer.setStr(messageText);
-			tempPlayer.name = fromClient.getAttribute("username");
+			tempPlayer.name = fromClient.getAttribute("unm");
 			trace("dd1 Remote got messageText2=",tempPlayer.getStr());
 			MoveController.getInstance().tellToController_Snake(tempPlayer);
 		}
 		
 		protected function gotMessageForChat (fromClient:IClient,messageText:String):void {
-			board.incomingMessages.appendText(fromClient.getAttribute("username") + " :: " + messageText+ "\n");
+			board.incomingMessages.appendText(fromClient.getAttribute("unm") + " :: " + messageText+ "\n");
 			board.incomingMessages.scrollV = Board.thisObj.incomingMessages.maxScrollV;
 		}
 		
@@ -96,7 +96,7 @@ package com.controller
 					var _remoteSnake:RemoteSnake;
 					if (e.getClient().isSelf() == false) {
 						var xmlStr:String = e.getClient().getAttribute(MsgController.ATR_SS);
-						var namee:String = e.getClient().getAttribute("username");
+						var namee:String = e.getClient().getAttribute("unm");
 						trace("dd1 got changes for ",namee);
 						if(board.allSnakes_vector.length > 0){
 							var alreadyExists:Boolean = false;
@@ -126,11 +126,14 @@ package com.controller
 			}
 		}
 		
-		private function updateUserlist(e:CustomEvent = null):void{
-			trace("fll updateUserlist",board);
+		private function updateUserlist(e:CustomEvent):void{
+			trace("fll updateUserlist_______");
 			var ary:Array = [];
 			for each (var client:IClient in remote.chatRoom.getOccupants()) {
-				var obj:Object = {nm:client.getAttribute("username"),img: 'images/Hydrangeas_1.png'};
+				var namee:String = client.getAttribute("unm");
+				var imgg:String = 'images/Hydrangeas_1.png';
+				trace("fll name",namee)
+				var obj:Object = {nm:namee,img:imgg};
 				ary.push(obj);
 			}
 			board.usersData = new ArrayCollection(ary);
@@ -138,7 +141,7 @@ package com.controller
 		
 		private function somebodyLeft(event:CustomEvent):void{
 			var e:RoomEvent = event.data2 as RoomEvent;
-			var leftName:String = e.getClient().getAttribute("username");
+			var leftName:String = e.getClient().getAttribute("unm");
 			trace("left som",leftName);
 			board.clientLeftRemoveSnake(leftName);
 			board.incomingMessages.appendText(leftName + " left the chat.\n");

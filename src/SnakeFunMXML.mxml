@@ -23,6 +23,10 @@
 			public var moveController:MoveController;
 			public var msgController:MsgController;
 			
+			public var myFBookName:String = "tempfbname";
+			public var myFBookID:String = "tempfbId";
+			public var myFBookIMG:String = "Hydrangeas_1";
+			
 			private function addListeners():void{
 				myinitComp.addEventListener("cc",joined);
 			}

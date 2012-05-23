@@ -34,8 +34,11 @@ package com.view
 		[Bindable]             
 		public var usersData:ArrayCollection;
 		
+		public var baseMXML:SnakeFunMXML;
+		
 		
 		public function Board(_base:SnakeFunMXML){
+			baseMXML = _base;
 			thisObj = this;
 			makeDummyUI()
 			init();
@@ -50,6 +53,8 @@ package com.view
 		private function iJoined_AddMySnake(e:CustomEvent):void{
 			//add my snake;
 			if(e.data is PlayerDataVO){
+				Remote.getInstance().setMyFBData(baseMXML.myFBookName,baseMXML.myFBookID,baseMXML.myFBookIMG);
+				Remote.getInstance().chatRoom.sendMessage("justUpdate",false,null,"justit");
 				mySnake = new MySnake();
 				mySnake.playerData = e.data;
 				mySnake.addEventListener(MySnake.I_GOT_FOOD,MoveController.getInstance().tellToController_MYSnakeGotFood);
@@ -61,7 +66,7 @@ package com.view
 				trace("dd1 iJoined_AddMySnake my name",mySnake.playerData.name);
 			}else{
 				var roomEvent:RoomEvent = RoomEvent(e.data2);
-				var nameee:String = roomEvent.getClient().getAttribute("username");
+				var nameee:String = roomEvent.getClient().getAttribute("unm");
 				incomingMessages.appendText(nameee + " joined the chat.\n");
 				var tempPlayer:PlayerDataVO = new PlayerDataVO();
 				tempPlayer.name = nameee;
@@ -115,7 +120,6 @@ package com.view
 		// User interface objects
 		public var incomingMessages:TextField;
 		public var outgoingMessages:TextField;
-		//public var userlist:TextField;
 		public var nameInput:TextField;
 		public static var TXT:Object = new Object();
 		private function makeDummyUI():void{

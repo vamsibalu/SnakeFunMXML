@@ -7,13 +7,15 @@
 	<s:layout>
 		<s:HorizontalLayout/>
 	</s:layout>
-	<s:Image id="img" width="30" height="30" verticalAlign="middle"/>
-	<s:Label id="lblData" styleName="bala" height="{img.height}" verticalAlign="middle"/>
+	<s:Image id="img" width="100%" height="100%" verticalAlign="middle"/>
+	<s:Label id="lblData" styleName="bala" height="100%" verticalAlign="middle"/>
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.events.FlexEvent;
 			public override function set data(value:Object):void{
 				if(value){
+					super.data = value;
 					img.source = value.img;
 					lblData.text = value.nm;
 				}
