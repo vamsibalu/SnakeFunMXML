@@ -15,6 +15,7 @@
 			import com.facebook.graph.Facebook;
 			
 			import mx.controls.Alert;
+			import mx.core.Application;
 			import mx.events.FlexEvent;
 			
 			public static var WIDTH:Number;
@@ -26,6 +27,8 @@
 			public var myFBookName:String = "tempfbname";
 			public var myFBookID:String = "tempfbId";
 			public var myFBookIMG:String = "Hydrangeas_1";
+			
+			public var localMode:Boolean;
 			
 			private function addListeners():void{
 				myinitComp.addEventListener("cc",joined);
@@ -42,8 +45,21 @@
 			}
 			
 			protected function application1_creationCompleteHandler(event:FlexEvent):void{
-				currentState = "loggedout";
-				currentState="loggedin";
+				trace(this.parent.parent.loaderInfo)
+				//parentApplication.url
+				var linf:String = this.parent.parent.loaderInfo.url;
+				if(linf.indexOf("file:///")>-1){
+					localMode=true;
+				}
+				
+				//localMode = false; //HardCoded
+				
+				if(localMode == true){
+					currentState="loggedin";
+				}else{
+					currentState = "loggedout";
+				}
+				
 				trace("calling facebook init..",this);
 				Facebook.init("404922902864346",loginHandler);//425799344104438  //237205039668370
 				//Alert.show("ok");
@@ -52,8 +68,12 @@
 				trace("loginHandler .",success)
 				if(success){
 					currentState="loggedin";
-					Facebook.api("/me",getMeHandler);	
-					userImg.source=Facebook.getImageUrl(success.uid,"small");
+					Facebook.api("/me",getMeHandler);
+					var myImg:String = Facebook.getImageUrl(success.uid,"small");
+					myFBookIMG = myImg;
+					myFBookID = success.uid;
+					userImg.source = myImg;
+					
 					//Facebook.api("/me/statuses",getStatusHandler);
 				}else{
 					trace("not logged in...")
@@ -61,7 +81,8 @@
 			}
 			
 			protected function getMeHandler(result:Object,fail:Object):void{
-				nameLbl.text=result.name;
+				myFBookName = result.name;
+				nameLbl.text = result.name;
 			}
 			
 			protected function login():void{
@@ -77,7 +98,7 @@
 			
 		]]>
 	</fx:Script>
-
+	
 	<!-- Properties of the parent ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 	
 	
