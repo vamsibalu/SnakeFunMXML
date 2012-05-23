@@ -26,12 +26,11 @@ package com.controller
 		public static const CHAT_MESSAGE:String = "chtmsg";
 		public static var ROOM_NAME:String = "tempwithmdu";
 		
-		public static const ATR_SS:String = "atrs";
+		public static const ATR_SS:String = "atsnk";
 		
 		private var remote:Remote;
 		private var board:Board;
 		public static var classCount:int = 0;
-		private var msgTime:Timer = new Timer(120);
 		
 		public function MsgController(_board:Board){
 			classCount++;
@@ -47,17 +46,8 @@ package com.controller
 			//msgTime.addEventListener(TimerEvent.TIMER,sendMsgTime);
 		}
 		
-		public function startRemoteTiming():void{
-			msgTime.start();
-		}
-		
 		private function sendMsgTime(e:TimerEvent):void{
 			Remote.getInstance().chatRoom.sendMessage("t",true,null,"t");
-		}
-		
-		protected function gotTime(fromClient:IClient,messageText:String):void {
-			trace("dd1 timing..")
-			//board.mySnake.moveIt();
 		}
 		
 		private function serverReady(e:Event):void{
@@ -66,7 +56,6 @@ package com.controller
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_SNAKEDATA,gotMessageForSnake);
 			remote.chatRoom.addMessageListener(CustomEvent.CHAT_MESSAGE,gotMessageForChat);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_DIRECTION,gotMessageForDirections);
-			remote.chatRoom.addMessageListener("t",gotTime);
 			remote.chatRoom.addEventListener(RoomEvent.UPDATE_CLIENT_ATTRIBUTE,updateClientAttributeListener);
 			remote.addEventListener(Remote.SUMBODY_LEFT,somebodyLeft);
 		}
@@ -100,26 +89,9 @@ package com.controller
 		
 		// Method invoked when any client in the room
 		// changes the value of a shared attribute
-		private var takenFoodDataFirstTime:Boolean = false;
 		protected function updateClientAttributeListener (e:RoomEvent):void {
 			var changedAttr:Attribute = e.getChangedAttr();
-			var objj:Object = new Object();
 			switch (changedAttr.name){
-				case "username":
-					if (changedAttr.oldValue == null) {
-						Board.thisObj.incomingMessages.appendText("Guest" + e.getClientID());
-						objj.oldN = "Guest" + e.getClientID();
-					} else {
-						Board.thisObj.incomingMessages.appendText(changedAttr.oldValue);
-						objj.oldN = changedAttr.oldValue;
-					}
-					objj.newN =  e.getClient().getAttribute("username");
-					trace("ddd Remote dispatching name changed=",objj.oldN," TO ",objj.newN);
-					board.updateSnakeName(objj.oldN,objj.newN);
-					board.incomingMessages.appendText(" 's name changed to "+ e.getClient().getAttribute("username")+ ".\n");
-					board.incomingMessages.scrollV = board.incomingMessages.maxScrollV;
-					updateUserlist();
-					break;
 				case MsgController.ATR_SS:
 					var _remoteSnake:RemoteSnake;
 					if (e.getClient().isSelf() == false) {
@@ -144,7 +116,6 @@ package com.controller
 						
 						_remoteSnake.setCurrentStatus(xmlStr);
 						if(XML(xmlStr).f!=undefined && XML(xmlStr).f!=null){
-							takenFoodDataFirstTime = true;
 							trace("dd2 gotfood data from first HERO",XML(xmlStr).f.@data)
 							board.placeFood_ByRemote(null,XML(xmlStr).f.@data);
 						}
@@ -159,10 +130,8 @@ package com.controller
 			trace("fll updateUserlist",board);
 			var ary:Array = [];
 			for each (var client:IClient in remote.chatRoom.getOccupants()) {
-				//board.userlist.appendText(client.getAttribute("username") + "\n");
-				var obj:Object = {name:client.getAttribute("username"),img: 'images/Hydrangeas_1.png'};
-				ary.push(new ObjectProxy(obj));
-				//trace("ddd client=",client)
+				var obj:Object = {nm:client.getAttribute("username"),img: 'images/Hydrangeas_1.png'};
+				ary.push(obj);
 			}
 			board.usersData = new ArrayCollection(ary);
 		}
@@ -170,7 +139,7 @@ package com.controller
 		private function somebodyLeft(event:CustomEvent):void{
 			var e:RoomEvent = event.data2 as RoomEvent;
 			var leftName:String = e.getClient().getAttribute("username");
-			trace("left som");
+			trace("left som",leftName);
 			board.clientLeftRemoveSnake(leftName);
 			board.incomingMessages.appendText(leftName + " left the chat.\n");
 			board.incomingMessages.scrollV = Board.thisObj.incomingMessages.maxScrollV;

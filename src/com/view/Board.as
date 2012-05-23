@@ -95,7 +95,7 @@ package com.view
 			if(MoveController.apple == null){
 				MoveController.apple = new Element(0xFF0000,1,10, 10);
 			}
-			trace("dd1 placeFood_ByRemote messageText",messageText)
+			trace("dd1 placeFood_ByRemote messageText",messageText);
 			Remote.getInstance().foodData.setString(messageText);
 			addChild(MoveController.apple);
 			MoveController.apple.x = Remote.getInstance().foodData.xx;
@@ -110,18 +110,6 @@ package com.view
 			allSnakes_vector.push(tempRemoteSnake);
 			trace("ddd addNewSnake in Board  for player=",playerData.name," allSnakes.length=",allSnakes_vector.length);
 			return tempRemoteSnake;
-		}
-		
-		//msgController
-		public function updateSnakeName(oldN:String,newN:String):void{
-			for(var i:int = 0; i<allSnakes_vector.length; i++){
-				trace("ddd updateSnakeName allSnakes.length= ",allSnakes_vector.length," playerDataoldN=",allSnakes_vector[i].playerData.name,"oldN=",oldN," newN",newN)
-				if(allSnakes_vector[i].playerData.name == oldN){
-					trace("ddd modifying name for",oldN,newN);
-					allSnakes_vector[i].playerData.name = newN;
-					break;
-				}
-			}
 		}
 		
 		// User interface objects
