@@ -20,5 +20,5 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) -->
 	</fx:Declarations>
-	<mx:List id="userList" itemRenderer="comps.thumbs" dataProvider="{board.usersData}" width="100" depth="4" x="500"/>
+	<mx:List id="userList" itemRenderer="comps.thumbs" dataProvider="{board.usersData}" width="170" depth="4" x="500"/>
 </s:Group>

@@ -3,21 +3,21 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)">
 	
-		<fx:Metadata>
-			[Event(name="clsoeEvent", type="flash.events.Event")]
-		</fx:Metadata>
+	<fx:Metadata>
+		[Event(name="clsoeEvent", type="flash.events.Event")]
+	</fx:Metadata>
 	<fx:Script>
 		<![CDATA[
 			import mx.events.FlexEvent;
 			public function joined(e:Event):void{
 				dispatchEvent(new Event('cc'));
 			}
-
+			
 			protected function group1_creationCompleteHandler(event:FlexEvent):void
 			{
 				// TODO Auto-generated method stub
 			}
-
+			
 		]]>
 	</fx:Script>
 	<s:states>
@@ -38,9 +38,6 @@
 					<s:TextInput id="roomName"/>
 					<s:Button id="jb" label="Join" label.register="Create and Join" click="joined(event)"/>
 				</s:HGroup>
-				
-					
-				
 			</s:FormItem>
 			<s:FormItem>
 				<mx:LinkButton label="Want to Join your own room..?" label.register="Return to enter your friend room" click="currentState='register'" click.register="currentState='initS'">
@@ -48,6 +45,4 @@
 			</s:FormItem>
 		</s:Form>
 	</s:Panel>
-	
-	
 </s:Group>
