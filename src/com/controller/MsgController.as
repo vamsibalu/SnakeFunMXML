@@ -52,8 +52,8 @@ package com.controller
 		}
 		
 		private function serverReady(e:Event):void{
-			board.RoomName = ROOM_NAME;
 			trace("fll serverReady in MsgController ROOM_NAME",ROOM_NAME);
+			board.RoomName = ROOM_NAME;
 			remote.joinRoom(ROOM_NAME);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_SNAKEDATA,gotMessageForSnake);
 			remote.chatRoom.addMessageListener(CustomEvent.CHAT_MESSAGE,gotMessageForChat);

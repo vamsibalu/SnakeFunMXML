@@ -2,25 +2,17 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300"
-		 creationComplete="group1_creationCompleteHandler(event)">
+		 creationComplete="group1_creationCompleteHandler(event)" xmlns:view="com.view.*">
 	<fx:Script>
 		<![CDATA[
 			import com.controller.MsgController;
 			import com.model.Remote;
 			import com.view.Board;
-			
 			import mx.events.FlexEvent;
 			
-			[Bindable]
-			public var board:Board;
 			protected function group1_creationCompleteHandler(event:FlexEvent):void{
-				trace("board creating this.parentApplication",this.parentApplication,this,this.stage);
-				board = new Board(this.parentApplication as SnakeFunMXML);
-				board.x = 100;
-				board.y = 50;
-				addElement(board);
+				trace("board creating this.parentApplication",this.parentApplication);
 			}
-			
 			
 			protected function inputMsg_keyUpHandler(event:KeyboardEvent):void{
 				if (event.keyCode == Keyboard.ENTER) {
@@ -29,23 +21,29 @@
 				}
 			}
 			
+			protected function bb_creationCompleteHandler(event:FlexEvent):void{
+				board.createBoard(this.parentApplication as SnakeFunMXML);
+			}
+			
 		]]>
 	</fx:Script>
-	<fx:Declarations>
-		<!-- Place non-visual elements (e.g., services, value objects) -->
-	</fx:Declarations>
+	
 	<s:Form depth="2" horizontalCenter="true" x="300">
-		<s:FormItem label="RoomName">
+		<s:FormItem label="Room ID :: ">
 			<s:Label text="{board.RoomName}"/>
 		</s:FormItem>
 	</s:Form>
 	
 	
-	<s:VGroup width="100%" height="100%" paddingLeft="7" paddingTop="7" paddingRight="7" horizontalAlign="right">
-		<mx:List id="userList" itemRenderer="comps.thumbs" enabled="false" dataProvider="{board.usersData}" width="20%" height="60%" depth="4" x="550"/>
-		<s:VGroup id="chatBox" x="0" y="400" width="100%" height="40%">
+	<s:VGroup width="100%" height="100%" paddingLeft="5" paddingTop="5" paddingRight="5" paddingBottom="5">
+		<s:HGroup width="100%" height="70%">
+			<view:Board id="board" width="80%" height="100%" creationComplete="bb_creationCompleteHandler(event)"/>
+			<mx:List id="userList" itemRenderer="comps.thumbs" enabled="false" dataProvider="{board.usersData}" width="20%" height="100%"/>
+		</s:HGroup>
+		<s:VGroup id="chatBox" x="0" y="400" width="100%" height="30%">
 			<s:TextArea text="{board.inComingChatMsg}" width="100%" height="65%" enabled="false"/>
 			<s:TextInput id="inputMsg" keyUp="inputMsg_keyUpHandler(event)" width="100%" height="30%"/>
 		</s:VGroup>
 	</s:VGroup>
+	
 </s:Group>

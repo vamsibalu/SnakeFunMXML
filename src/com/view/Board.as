@@ -44,7 +44,11 @@ package com.view
 		public var baseMXML:SnakeFunMXML;
 		
 		
-		public function Board(_base:SnakeFunMXML){
+		public function Board(){
+			
+		}
+		
+		public function createBoard(_base:SnakeFunMXML):void{
 			baseMXML = _base;
 			thisObj = this;
 			init();
@@ -56,7 +60,7 @@ package com.view
 			var sp:Shape = new Shape();
 			sp.graphics.beginFill(0xcccccc,.3);
 			sp.graphics.lineStyle(1,0xcccccc);
-			sp.graphics.drawRect(0,0,SnakeFunMXML.WIDTH,SnakeFunMXML.HEIGHT);
+			sp.graphics.drawRect(0,0,width,height);
 			addChild(sp);
 		}
 		
