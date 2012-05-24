@@ -4,7 +4,7 @@ html-template
 .actionScriptProperties
 .DS_Store
 assets/swf/assets.html
-bin-debug/SnakeFun.swf
+bin-debug/SnakeFunMXML.swf
 resources
 
 /build-SWF/_Arial.swf
