@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
-			   xmlns:mx="library://ns.adobe.com/flex/mx" width="800" height="600" minWidth="955" minHeight="600" xmlns:comps="comps.*"
+			   xmlns:mx="library://ns.adobe.com/flex/mx" width="800" height="800" minWidth="955" minHeight="600" xmlns:comps="comps.*"
 			   creationComplete="application1_creationCompleteHandler(event)">
 	<s:states>
 		<s:State name="loggedin"/>
@@ -18,8 +18,8 @@
 			import mx.core.Application;
 			import mx.events.FlexEvent;
 			
-			public static var WIDTH:Number = 800;
-			public static var HEIGHT:Number = 600;
+			public static var WIDTH:Number = 550;
+			public static var HEIGHT:Number = 400;
 			
 			public var moveController:MoveController;
 			public var msgController:MsgController;

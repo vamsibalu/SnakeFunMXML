@@ -11,6 +11,7 @@ package com.view
 	import com.model.Remote;
 	import com.utils.UIObj;
 	
+	import flash.display.Shape;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -34,6 +35,9 @@ package com.view
 		[Bindable]             
 		public var usersData:ArrayCollection;
 		
+		[Bindable]             
+		public var RoomName:String="badroom";
+		
 		public var baseMXML:SnakeFunMXML;
 		
 		
@@ -47,6 +51,11 @@ package com.view
 		private function init():void{
 			//add Remote Listeners..
 			Remote.getInstance().addEventListener(Remote.IJOINED_ADDMYSNAKE,iJoined_AddMySnake);
+			var sp:Shape = new Shape();
+			sp.graphics.beginFill(0xcccccc,.3);
+			sp.graphics.lineStyle(1,0xcccccc);
+			sp.graphics.drawRect(0,0,SnakeFunMXML.WIDTH,SnakeFunMXML.HEIGHT);
+			addChild(sp);
 		}
 		
 		//SSS xx=200;yy=200;col=0xff00ff;
@@ -124,17 +133,15 @@ package com.view
 		// User interface objects
 		public var incomingMessages:TextField;
 		public var outgoingMessages:TextField;
-		public var nameInput:TextField;
 		public static var TXT:Object = new Object();
 		private function makeDummyUI():void{
 			var tempSp:Sprite = new Sprite();
-			incomingMessages = UIObj.creatTxt(tempSp,400,200);
-			outgoingMessages = UIObj.creatTxt(tempSp,399,60,10,210);
+			incomingMessages = UIObj.creatTxt(tempSp,799,150,0,400);
+			outgoingMessages = UIObj.creatTxt(tempSp,799,30,0,550);
 			TXT.a = incomingMessages;
 			TXT.b = outgoingMessages;
 			// Keyboard listener for outgoingMessages
 			outgoingMessages.addEventListener(KeyboardEvent.KEY_UP, keyUpListener);
-			nameInput = UIObj.creatTxt(tempSp,100,20,10,340);
 			addChild(tempSp);
 		}
 		

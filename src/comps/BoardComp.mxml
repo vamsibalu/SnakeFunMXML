@@ -20,5 +20,10 @@
 	<fx:Declarations>
 		<!-- Place non-visual elements (e.g., services, value objects) -->
 	</fx:Declarations>
-	<mx:List id="userList" itemRenderer="comps.thumbs" dataProvider="{board.usersData}" width="170" depth="4" x="500"/>
+	<s:Form depth="2" horizontalCenter="true" x="300">
+		<s:FormItem label="RoomName">
+			<s:Label text="{board.RoomName}"/>
+		</s:FormItem>
+	</s:Form>
+	<mx:List id="userList" itemRenderer="comps.thumbs" enabled="false" dataProvider="{board.usersData}" width="170" height="400" depth="4" x="550"/>
 </s:Group>
