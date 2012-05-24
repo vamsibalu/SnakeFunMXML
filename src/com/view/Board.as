@@ -64,7 +64,7 @@ package com.view
 			var sp:Shape = new Shape();
 			sp.graphics.beginFill(0xcccccc,.3);
 			sp.graphics.lineStyle(1,0xcccccc);
-			sp.graphics.drawRect(0,0,width,height);
+			sp.graphics.drawRect(0,0,width,height-5);
 			addChild(sp);
 		}
 		

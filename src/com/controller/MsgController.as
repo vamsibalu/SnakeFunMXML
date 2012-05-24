@@ -136,13 +136,8 @@ package com.controller
 			for each (var client:IClient in remote.chatRoom.getOccupants()) {
 				var namee:String = client.getAttribute("unm");
 				var idd:String = client.getAttribute("uid");
-				var imgg:String
-				if(board.baseMXML.localMode == true){
-					imgg = 'images/'+client.getAttribute("uimg")+'.png';
-				}else{
-					imgg = client.getAttribute("uimg");
-				}
-				trace("fll name",namee)
+				var imgg:String = client.getAttribute("uimg");
+				trace("fll name=",namee)
 				var obj:Object = {unm:namee,uid:idd,uimg:imgg};
 				ary.push(obj);
 			}
