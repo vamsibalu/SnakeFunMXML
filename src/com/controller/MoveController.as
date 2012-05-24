@@ -87,8 +87,6 @@ package com.controller
 			
 			var tempMsg:String = e.data.directon;
 			Remote.getInstance().chatRoom.sendMessage(MsgController.ABOUT_DIRECTION,true,null,tempMsg);
-			Board.TXT.b.text = tempMsg;
-			trace("dd1 sending Direction message=",tempMsg)
 		}
 		
 		private function updateMySnake_isSlef():void{

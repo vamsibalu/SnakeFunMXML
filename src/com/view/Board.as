@@ -38,13 +38,15 @@ package com.view
 		[Bindable]             
 		public var RoomName:String="badroom";
 		
+		[Bindable]             
+		public var inComingChatMsg:String="Simple Chat Msg...";
+		
 		public var baseMXML:SnakeFunMXML;
 		
 		
 		public function Board(_base:SnakeFunMXML){
 			baseMXML = _base;
 			thisObj = this;
-			makeDummyUI()
 			init();
 		}
 		
@@ -71,12 +73,12 @@ package com.view
 				mySnake.addEventListener(CustomEvent.MY_KEY_DATA_TO_SEND,MoveController.getInstance().tellToController_ToSendDirections);
 				addChild(mySnake);
 				allSnakes_vector.push(mySnake);
-				incomingMessages.appendText("You joined the chat.\n");
+				inComingChatMsg = inComingChatMsg + "You joined the chat.\n";
 				trace("dd1 iJoined_AddMySnake my name",mySnake.playerData.name);
 			}else{
 				var roomEvent:RoomEvent = RoomEvent(e.data2);
 				var nameee:String = roomEvent.getClient().getAttribute("unm");
-				incomingMessages.appendText(nameee + " joined the chat.\n");
+				inComingChatMsg = inComingChatMsg + nameee + " joined the chat.\n";
 				var tempPlayer:PlayerDataVO = new PlayerDataVO();
 				tempPlayer.name = nameee;
 				addNewSnake(tempPlayer);
@@ -129,28 +131,5 @@ package com.view
 			trace("ddd addNewSnake in Board  for player=",playerData.name," allSnakes.length=",allSnakes_vector.length);
 			return tempRemoteSnake;
 		}
-		
-		// User interface objects
-		public var incomingMessages:TextField;
-		public var outgoingMessages:TextField;
-		public static var TXT:Object = new Object();
-		private function makeDummyUI():void{
-			var tempSp:Sprite = new Sprite();
-			incomingMessages = UIObj.creatTxt(tempSp,799,150,0,400);
-			outgoingMessages = UIObj.creatTxt(tempSp,799,30,0,550);
-			TXT.a = incomingMessages;
-			TXT.b = outgoingMessages;
-			// Keyboard listener for outgoingMessages
-			outgoingMessages.addEventListener(KeyboardEvent.KEY_UP, keyUpListener);
-			addChild(tempSp);
-		}
-		
-		protected function keyUpListener (e:KeyboardEvent):void {
-			if (e.keyCode == Keyboard.ENTER) {
-				Remote.getInstance().chatRoom.sendMessage(MsgController.CHAT_MESSAGE,true,null,outgoingMessages.text);
-				outgoingMessages.text = "";
-			}
-		}
-		
 	}
 }

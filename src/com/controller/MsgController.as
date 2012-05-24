@@ -82,8 +82,8 @@ package com.controller
 		}
 		
 		protected function gotMessageForChat (fromClient:IClient,messageText:String):void {
-			board.incomingMessages.appendText(fromClient.getAttribute("unm") + " :: " + messageText+ "\n");
-			board.incomingMessages.scrollV = Board.thisObj.incomingMessages.maxScrollV;
+			board.inComingChatMsg = board.inComingChatMsg + fromClient.getAttribute("unm") + " :: " + messageText+ "\n";
+			//board.incomingMessages.scrollV = Board.thisObj.incomingMessages.maxScrollV;
 		}
 		
 		//MoveController will call with updated foodData
@@ -158,8 +158,8 @@ package com.controller
 			var leftName:String = e.getClient().getAttribute("unm");
 			trace("left som",leftName);
 			board.clientLeftRemoveSnake(leftName);
-			board.incomingMessages.appendText(leftName + " left the chat.\n");
-			board.incomingMessages.scrollV = Board.thisObj.incomingMessages.maxScrollV;
+			board.inComingChatMsg = board.inComingChatMsg +leftName + " left the chat.\n";
+			//board.incomingMessages.scrollV = Board.thisObj.incomingMessages.maxScrollV;
 		}
 		
 		
