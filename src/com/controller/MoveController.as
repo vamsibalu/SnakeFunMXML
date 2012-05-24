@@ -108,10 +108,10 @@ package com.controller
 			if (caught)
 				apple.catchValue += 10;
 			
-			var boundsX:int = (Math.floor(SnakeFunMXML.WIDTH / (snake_vector[0].width + space_value)))-1;
+			var boundsX:int = (Math.floor(Board.WIDTH / (snake_vector[0].width + space_value)))-1;
 			var randomX:Number = Math.floor(Math.random()*boundsX);
 			
-			var boundsY:int = (Math.floor(SnakeFunMXML.HEIGHT/(snake_vector[0].height + space_value)))-1;
+			var boundsY:int = (Math.floor(Board.HEIGHT/(snake_vector[0].height + space_value)))-1;
 			var randomY:Number = Math.floor(Math.random()*boundsY);
 			
 			apple.x = randomX * (apple.width + space_value);

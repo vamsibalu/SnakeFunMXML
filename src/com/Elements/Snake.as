@@ -60,19 +60,15 @@ package com.Elements
 			this.addChild(score_tf);
 			
 			//Create the first <min_elements> Snake parts
-			for(var i:int=0;i<min_elements;++i)
-			{
+			for(var i:int=0;i<min_elements;++i){
 				snake_vector[i] = new Element(0x00AAFF,1,10,10);
 				//snake_vector[i].rotationZ = Math.random()*45;
 				snake_vector[i].direction = "R"; //The starting direction of the snake
-				if (i == 0)
-				{
+				if (i == 0){
 					//you have to place the first element on a GRID. (now: 0,0) [possible x positions: (snake_vector[0].width+space_value)*<UINT> ]
 					attachElement(snake_vector[i],0,0,snake_vector[i].direction) 
 					snake_vector[0].alpha = 0.7;
-				}
-				else
-				{
+				}else{
 					attachElement(snake_vector[i], snake_vector[i - 1].x, snake_vector[i - 1].y, snake_vector[i - 1].direction);
 				}
 			}
@@ -130,7 +126,7 @@ package com.Elements
 				}
 			}
 			if(remoteSnake == false){
-				if (snake_vector[0].x > SnakeFunMXML.WIDTH-snake_vector[0].width || snake_vector[0].x < 0 || snake_vector[0].y > SnakeFunMXML.HEIGHT-snake_vector[0].height || snake_vector[0].y < 0){
+				if (snake_vector[0].x > Board.WIDTH-snake_vector[0].width || snake_vector[0].x < 0 || snake_vector[0].y > Board.HEIGHT-snake_vector[0].height || snake_vector[0].y < 0){
 					GAME_OVER();
 				}
 			}

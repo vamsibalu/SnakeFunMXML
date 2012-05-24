@@ -31,6 +31,8 @@ package com.view
 		public var allSnakes_vector:Vector.<Snake> = new Vector.<Snake>();
 		public static var thisObj:Board;
 		public static var IFirst:Boolean = false;
+		public static var WIDTH:Number = 550;
+		public static var HEIGHT:Number = 400;
 		
 		[Bindable]             
 		public var usersData:ArrayCollection;
@@ -49,6 +51,8 @@ package com.view
 		}
 		
 		public function createBoard(_base:SnakeFunMXML):void{
+			WIDTH = width;
+			HEIGHT = height;
 			baseMXML = _base;
 			thisObj = this;
 			init();

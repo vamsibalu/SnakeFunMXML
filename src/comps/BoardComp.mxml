@@ -29,7 +29,7 @@
 	</fx:Script>
 	
 	<s:Form depth="2" horizontalCenter="true" x="300">
-		<s:FormItem label="Room ID :: ">
+		<s:FormItem label="Room ID ">
 			<s:Label text="{board.RoomName}"/>
 		</s:FormItem>
 	</s:Form>

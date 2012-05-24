@@ -19,9 +19,6 @@
 			import mx.core.Application;
 			import mx.events.FlexEvent;
 			
-			public static var WIDTH:Number = 550;
-			public static var HEIGHT:Number = 400;
-			
 			public var moveController:MoveController;
 			public var msgController:MsgController;
 			
