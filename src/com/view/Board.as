@@ -38,7 +38,7 @@ package com.view
 		public var usersData:ArrayCollection;
 		
 		[Bindable]             
-		public var RoomName:String="badroom";
+		public var RoomName:String="a";
 		
 		[Bindable]             
 		public var inComingChatMsg:String="Simple Chat Msg...";

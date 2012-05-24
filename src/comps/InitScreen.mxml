@@ -14,7 +14,7 @@
 				if(roomName.text.length>3){
 					dispatchEvent(new Event('cc'));
 				}else{
-					Alert.show("Length should be greater then 3","Room Name Error..");
+					Alert.show("Length should be greater than 3 :-)","Room Name Error..");
 				}
 			}
 			
