@@ -1,5 +1,6 @@
 package com.Elements
 {
+	import com.controller.MoveController;
 	import com.events.CustomEvent;
 	import com.model.Remote;
 	import com.view.Board;
@@ -13,14 +14,17 @@ package com.Elements
 		public static const I_GOT_FOOD:String = "igotfood";
 		
 		public function MySnake(){
-			super(false);
+			super(false,MoveController.thisObj,Board.WIDTH,Board.HEIGHT);
 			addEventListener(Event.ADDED_TO_STAGE,addedToStage);
 		}
 		
 		private function addedToStage(e:Event):void{
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,directionChanged);
 		}
-		
+		public override function iGotFood():void{
+			trace("Igot food in MySnake override")
+			dispatchEvent(new Event(MySnake.I_GOT_FOOD));
+		}
 		private function directionChanged(e:KeyboardEvent):void {
 			var m:Object = new Object(); //MARKER OBJECT
 			var directionChanged:Boolean = false;

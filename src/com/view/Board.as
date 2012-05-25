@@ -120,14 +120,14 @@ package com.view
 		//call from msgController for first time by First Hero
 		public function placeFood_ByRemote (fromClient:IClient=null,messageText:String=""):void {
 			//placeApple(mySnake.snake_vector);
-			if(MoveController.apple == null){
-				MoveController.apple = new Element(0xFF0000,1,10, 10);
+			if(MoveController.thisObj.apple == null){
+				MoveController.thisObj.apple = new Element(0xFF0000,1,10, 10);
 			}
 			trace("dd1 placeFood_ByRemote messageText",messageText);
 			Remote.getInstance().foodData.setString(messageText);
-			addChild(MoveController.apple);
-			MoveController.apple.x = Remote.getInstance().foodData.xx;
-			MoveController.apple.y = Remote.getInstance().foodData.yy;
+			addChild(MoveController.thisObj.apple);
+			MoveController.thisObj.apple.x = Remote.getInstance().foodData.xx;
+			MoveController.thisObj.apple.y = Remote.getInstance().foodData.yy;
 		}
 		
 		//msgController can use for before you snake..

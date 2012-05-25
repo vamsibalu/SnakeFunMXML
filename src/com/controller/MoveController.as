@@ -17,8 +17,8 @@ package com.controller
 	import net.user1.reactor.IClient;
 	
 	public class MoveController extends EventDispatcher{
-		private static var thisObj:MoveController;
-		public static var apple:Element; //Our apple
+		public static var thisObj:MoveController;
+		public var apple:Element; //Our apple
 		private var space_value:Number; //space between the snake parts
 		private var view:BoardComp;
 		public static var classCount:int = 0;

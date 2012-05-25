@@ -4,12 +4,15 @@
  */
 package com.Elements
 {
+	import com.controller.MoveController;
+	import com.view.Board;
+	
 	import flash.ui.Keyboard;
 	
 	public class RemoteSnake extends Snake implements ISnake{
 		
 		public function RemoteSnake(){
-			super(true);
+			super(true,MoveController.thisObj,Board.WIDTH,Board.HEIGHT);
 		}
 		
 		//hey bala use this function with RemoteData;
