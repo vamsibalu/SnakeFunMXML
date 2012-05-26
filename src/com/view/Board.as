@@ -56,6 +56,8 @@ package com.view
 			baseMXML = _base;
 			thisObj = this;
 			init();
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,updateMySnakeSpeed);
+			stage.addEventListener(KeyboardEvent.KEY_UP,updateMySnakeSpeed);
 		}
 		
 		private function init():void{
@@ -83,6 +85,12 @@ package com.view
 				allSnakes_vector.push(mySnake);
 				inComingChatMsg = inComingChatMsg + "You joined the chat.\n";
 				trace("dd1 iJoined_AddMySnake my name",mySnake.playerData.name);
+				for each (var client2:IClient in Remote.getInstance().chatRoom.getOccupants()) {
+					if(client2.isSelf()){
+						client2.setAttribute(MsgController.ATR_TT,"400");
+						trace("dd6 set First SPEED Default",Remote.playerData.name);
+					}
+				}
 			}else{
 				var roomEvent:RoomEvent = RoomEvent(e.data2);
 				var nameee:String = roomEvent.getClient().getAttribute("unm");
@@ -112,10 +120,31 @@ package com.view
 				}
 			}
 		}
-		
-		public function resetSnakeTime(fromClient:IClient,messageText:String):void {
-			mySnake.timer.reset();
-			mySnake.timer.start();
+		private var downed:Boolean = false;
+		private function updateMySnakeSpeed(e:KeyboardEvent):void{
+			if(MsgController.ServerReady == true){
+				if (downed == false && e.type == KeyboardEvent.KEY_DOWN && e.keyCode == Keyboard.CONTROL){
+					for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
+						if(client.isSelf()){
+							client.setAttribute(MsgController.ATR_TT,"30");
+							trace("dd6 set setAttribute SPEED UP 100",Remote.playerData.name);
+						}
+					}
+					downed = true;
+				}
+				
+				if (e.type == KeyboardEvent.KEY_UP && e.keyCode == Keyboard.CONTROL){
+					downed = false;
+					for each (var client2:IClient in Remote.getInstance().chatRoom.getOccupants()) {
+						if(client2.isSelf()){
+							client2.setAttribute(MsgController.ATR_TT,"200");
+							trace("dd6 set BAck SPEED Default",Remote.playerData.name);
+						}
+					}
+				}
+			}else{
+				trace("dd6 w8.. man nitro is not available")
+			}
 		}
 		//call from msgController for first time by First Hero
 		public function placeFood_ByRemote (fromClient:IClient=null,messageText:String=""):void {

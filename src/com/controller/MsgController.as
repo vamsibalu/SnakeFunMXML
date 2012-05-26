@@ -2,6 +2,7 @@ package com.controller
 {
 	import com.Elements.MySnake;
 	import com.Elements.RemoteSnake;
+	import com.Elements.Snake;
 	import com.events.CustomEvent;
 	import com.model.PlayerDataVO;
 	import com.model.Remote;
@@ -25,13 +26,14 @@ package com.controller
 		public static const ABOUT_DIRECTION:String = "abdrct";
 		public static const CHAT_MESSAGE:String = "chtmsg";
 		public static var ROOM_NAME:String = "tempwithmdu";
-		public static const RESET_TIMER:String = "tm";
 		
 		public static const ATR_SS:String = "atsnk";
+		public static const ATR_TT:String = "ttatr";
 		
 		private var remote:Remote;
 		private var board:Board;
 		public static var classCount:int = 0;
+		public static var ServerReady:Boolean;
 		
 		public function MsgController(_board:Board){
 			classCount++;
@@ -52,13 +54,13 @@ package com.controller
 		}
 		
 		private function serverReady(e:Event):void{
-			trace("fll serverReady in MsgController ROOM_NAME",ROOM_NAME);
+			ServerReady = true;
+			trace("dd6 serverReady in MsgController ROOM_NAME",ROOM_NAME);
 			board.RoomName = ROOM_NAME;
 			remote.joinRoom(ROOM_NAME);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_SNAKEDATA,gotMessageForSnake);
 			remote.chatRoom.addMessageListener(CustomEvent.CHAT_MESSAGE,gotMessageForChat);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_DIRECTION,gotMessageForDirections);
-			remote.chatRoom.addMessageListener(MsgController.RESET_TIMER,board.resetSnakeTime);
 			
 			remote.chatRoom.addEventListener(RoomEvent.UPDATE_CLIENT_ATTRIBUTE,updateClientAttributeListener);
 			remote.addEventListener(Remote.SUMBODY_LEFT,somebodyLeft);
@@ -127,6 +129,21 @@ package com.controller
 						trace("dd2 updates from myself..??");
 					}
 					break;
+				case MsgController.ATR_TT:
+					var namee:String = e.getClient().getAttribute("unm");
+					var tempSnake:Snake;
+					trace("dd6 got ATR TT for ",namee,"Speed",changedAttr.value," on Board",Remote.playerData.name);
+					for(var k:int = 0; k<board.allSnakes_vector.length; k++){
+						trace("dd6 ",board.allSnakes_vector[k].playerData.name, namee);
+						if(board.allSnakes_vector[k].playerData.name == namee){
+							tempSnake = Snake(board.allSnakes_vector[k]);
+							break;
+						}
+					}
+					tempSnake.timer.reset();
+					tempSnake.timer.delay = Number(changedAttr.value);
+					tempSnake.timer.start();
+					break
 			}
 		}
 		
@@ -142,10 +159,6 @@ package com.controller
 				ary.push(obj);
 			}
 			board.usersData = new ArrayCollection(ary);
-		}
-		
-		public function resetTimerOnRemote():void{
-			remote.chatRoom.sendMessage(MsgController.RESET_TIMER,true,null,MsgController.RESET_TIMER);
 		}
 		
 		private function somebodyLeft(event:CustomEvent):void{

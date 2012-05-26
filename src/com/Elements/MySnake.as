@@ -25,6 +25,7 @@ package com.Elements
 			trace("Igot food in MySnake override")
 			dispatchEvent(new Event(MySnake.I_GOT_FOOD));
 		}
+		
 		private function directionChanged(e:KeyboardEvent):void {
 			var m:Object = new Object(); //MARKER OBJECT
 			var directionChanged:Boolean = false;
