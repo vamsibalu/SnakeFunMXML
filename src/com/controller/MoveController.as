@@ -4,6 +4,7 @@ package com.controller
 	import com.Elements.MySnake;
 	import com.Elements.RemoteSnake;
 	import com.events.CustomEvent;
+	import com.model.FoodDataVo;
 	import com.model.PlayerDataVO;
 	import com.model.Remote;
 	import com.view.Board;
@@ -14,6 +15,8 @@ package com.controller
 	import flash.events.EventDispatcher;
 	import flash.events.IEventDispatcher;
 	
+	import mx.core.INavigatorContent;
+	
 	import net.user1.reactor.IClient;
 	
 	public class MoveController extends EventDispatcher{
@@ -22,6 +25,7 @@ package com.controller
 		private var space_value:Number; //space between the snake parts
 		private var view:BoardComp;
 		public static var classCount:int = 0;
+		private var tempF:FoodDataVo = new FoodDataVo();
 		public function MoveController(_view:BoardComp){
 			thisObj = this;
 			space_value = 2;
@@ -53,10 +57,15 @@ package com.controller
 		}
 		
 		public function tellToController_MYSnakeGotFood(e:Event):void{
-			trace("dd1 told to controller placeApple");
 			//update my snake so everybody know about me...
-			updateMySnake_isSlef();
-			placeApple(view.board.mySnake.snake_vector,true);
+			if(Remote.getInstance().foodData.fname == Remote.getInstance().chatRoom.getAttribute("ff")){
+				trace("dd5 you deserve food..",Remote.getInstance().chatRoom.getAttribute("ff")," you",Remote.playerData.name);
+				view.board.mySnake.iGotFoodAddMyElement();
+				updateMySnake_isSlef();
+				placeApple(view.board.mySnake.snake_vector,true);
+			}else{
+				trace("dd5 food",Remote.getInstance().chatRoom.getAttribute("ff")," somebody already taken...you can't w8 ra ",Remote.playerData.name)
+			}
 		}
 		
 		public function tellToController_Snake(data:PlayerDataVO):void{
@@ -80,7 +89,7 @@ package com.controller
 			}
 		}
 		
-		//send message for Directon and 
+		//send message for Direction and 
 		public function tellToController_ToSendDirections(e:CustomEvent):void{
 			//update my snake so everybody know about me...
 			updateMySnake_isSlef();
@@ -99,7 +108,7 @@ package com.controller
 		}
 		
 		private function placeApple(snake_vector:Vector.<Element>,caught:Boolean = true):void{
-			trace("dd1 placeApple")
+			trace("dd5 placeApple")
 			if(apple == null){
 				apple = new Element(0xFF0000,1,10, 10);
 			}
@@ -124,11 +133,20 @@ package com.controller
 			}
 			
 			//now place apple anywhere
-			Remote.getInstance().foodData.fCount++;
-			Remote.getInstance().foodData.fname = "fd"+Remote.getInstance().foodData.fCount;
-			Remote.getInstance().foodData.xx = apple.x;
-			Remote.getInstance().foodData.yy = apple.y;
-			//new food data updated..
+			var fcounts:int
+			trace("dd5 fcounts",Remote.getInstance().chatRoom.getAttribute("ff"));
+			if(Remote.getInstance().chatRoom.getAttribute("ff")){
+				fcounts = int(Remote.getInstance().chatRoom.getAttribute("ff").split("fd")[1]);
+				fcounts++;
+			}else{
+				fcounts = 0;
+			}
+			trace("dd5 fcounts++",fcounts);
+			tempF.fname = "fd"+fcounts;
+			//tempF.col = Math.random();
+			tempF.xx = apple.x;
+			tempF.yy = apple.y;
+			Remote.getInstance().foodData = tempF;
 			MsgController.getInstance().tellToAllAboutFood();
 		}
 	}

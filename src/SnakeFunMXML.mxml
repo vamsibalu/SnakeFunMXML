@@ -15,6 +15,7 @@
 			import com.controller.MoveController;
 			import com.controller.MsgController;
 			import com.facebook.graph.Facebook;
+			import com.model.Remote;
 			
 			import mx.controls.Alert;
 			import mx.core.Application;
@@ -37,6 +38,7 @@
 			}
 			
 			private function boardCreationComplete():void{
+				Remote.playerData.name = myFBookName;
 				msgController = new MsgController(myBoardComp.board);
 				moveController = new MoveController(myBoardComp);
 			}

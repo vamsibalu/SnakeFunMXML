@@ -120,6 +120,7 @@ package com.view
 		//call from msgController for first time by First Hero
 		public function placeFood_ByRemote (fromClient:IClient=null,messageText:String=""):void {
 			//placeApple(mySnake.snake_vector);
+			trace("dd5 placeFood ByRemote")
 			if(MoveController.thisObj.apple == null){
 				MoveController.thisObj.apple = new Element(0xFF0000,1,10, 10);
 			}
