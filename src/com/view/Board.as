@@ -79,37 +79,37 @@ package com.view
 					meClient = client2;
 				}
 			}
-			
-			mySnake = new MySnake();
+			Remote.playerData.col = Math.random() * 0xFFFFFF;
+			mySnake = new MySnake(Remote.playerData.col);
 			mySnake.playerData = e.data;
+			mySnake.playerData.col = Remote.playerData.col;
 			Remote.getInstance().setMyFBData(baseMXML.myFBookName,baseMXML.myFBookID,baseMXML.myFBookIMG);
 			Remote.getInstance().chatRoom.sendMessage("justUpdate",true,null,"justit");
 			Remote.getInstance().chatRoom.sendMessage(CustomEvent.IJOINED,true,null,e.data.getStr());
+			trace("dd6 iJoined_AddMySnake and send messageIJOIned")
 		}
 		
+		//msgController..
 		public function iJoinedRemote(me:Boolean,pData:PlayerDataVO):void{
 			trace("dd6 iJoinedRemote=",pData.unm);
 			if(me == true){
 				mySnake.addEventListener(MySnake.I_GOT_FOOD,MoveController.getInstance().tellToController_MYSnakeGotFood);
 				Remote.getInstance().chatRoom.addMessageListener(MsgController.ADDFOOD_AT,placeFood_ByRemote);
+				Remote.getInstance().chatRoom.addMessageListener("died",someOneDied);
 				mySnake.addEventListener(CustomEvent.MY_KEY_DATA_TO_SEND,MoveController.getInstance().tellToController_ToSendDirections);
+				mySnake.addEventListener("died",iDiedTellToAll);
 				addChild(mySnake);
 				allSnakes_vector.push(mySnake);
 				inComingChatMsg = inComingChatMsg + "You joined the chat.\n";
-				var tempList:int = 0;
-				for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
-					tempList++;
-				}
-				if(tempList>1){
-					
-				}else{
-					Board.IFirst = true;
-					//MsgController.getInstance().startRemoteTiming();
-					MoveController.getInstance().placeApple(mySnake.snake_vector,false);
-				}
+				checkUFirst();
+				mySnake.timer.reset();
+				mySnake.timer.start();
 			}else{
 				addNewSnake(pData);
 				inComingChatMsg = inComingChatMsg + pData.unm + " joined the chat.\n";
+				mySnake.timer.reset();
+				trace("dd6 updating.. ATR_SS stopped my snake");
+				meClient.setAttribute("col",String(pData.col));
 				meClient.setAttribute(MsgController.ATR_SS,mySnake.currentStatusOfMySnake(true));
 			}
 		}
@@ -125,30 +125,35 @@ package com.view
 				}
 			}
 		}
+		
+		private function checkUFirst():void{
+			var tempList:int = 0;
+			for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
+				tempList++;
+			}
+			if(tempList>1){
+				
+			}else{
+				Board.IFirst = true;
+				//MsgController.getInstance().startRemoteTiming();
+				MoveController.getInstance().placeApple(mySnake.snake_vector,false);
+			}
+		}
+		
 		private var downed:Boolean = false;
 		private function updateMySnakeSpeed(e:KeyboardEvent):void{
 			if(MsgController.ServerReady == true){
 				if (downed == false && e.type == KeyboardEvent.KEY_DOWN && e.keyCode == Keyboard.CONTROL){
-					for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
-						if(client.isSelf()){
-							client.setAttribute(MsgController.ATR_TT,"30");
-							trace("dd6 set setAttribute SPEED UP 100",Remote.playerData.unm);
-						}
-					}
+					meClient.setAttribute(MsgController.ATR_TT,"30");
 					downed = true;
+					trace("dd6 set  SPEED UP 30",Remote.playerData.unm);
 				}
 				
 				if (e.type == KeyboardEvent.KEY_UP && e.keyCode == Keyboard.CONTROL){
 					downed = false;
-					for each (var client2:IClient in Remote.getInstance().chatRoom.getOccupants()) {
-						if(client2.isSelf()){
-							client2.setAttribute(MsgController.ATR_TT,"200");
-							trace("dd6 set BAck SPEED Default",Remote.playerData.unm);
-						}
-					}
+					meClient.setAttribute(MsgController.ATR_TT,"100");
+					trace("dd6 set BAck SPEED Default",Remote.playerData.unm);
 				}
-			}else{
-				trace("dd6 w8.. man nitro is not available")
 			}
 		}
 		//call from msgController for first time by First Hero
@@ -167,12 +172,21 @@ package com.view
 		
 		//msgController can use for before you snake..
 		public function addNewSnake(playerData:PlayerDataVO):RemoteSnake{
-			var tempRemoteSnake:RemoteSnake = new RemoteSnake();
+			trace("dd6 got col=",playerData.col)
+			var tempRemoteSnake:RemoteSnake = new RemoteSnake(playerData.col);
 			tempRemoteSnake.playerData = playerData;
 			addChild(tempRemoteSnake);
 			allSnakes_vector.push(tempRemoteSnake);
+			tempRemoteSnake.timer.reset();
+			tempRemoteSnake.timer.start();
 			trace("ddd addNewSnake in Board  for player=",playerData.unm," allSnakes.length=",allSnakes_vector.length);
 			return tempRemoteSnake;
+		}
+		private function someOneDied(fromClient:IClient=null,messageText:String=""):void {
+			
+		}
+		private function iDiedTellToAll(e:Event):void{
+			Remote.getInstance().chatRoom.sendMessage("died",true,null,"oh");
 		}
 	}
 }

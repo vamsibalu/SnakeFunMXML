@@ -11,8 +11,8 @@ package com.Elements
 	
 	public class RemoteSnake extends Snake implements ISnake{
 		
-		public function RemoteSnake(){
-			super(true,MoveController.thisObj,Board.WIDTH,Board.HEIGHT);
+		public function RemoteSnake(col:int){
+			super(true,MoveController.thisObj,Board.WIDTH,Board.HEIGHT,col);
 		}
 		
 		//hey bala use this function with RemoteData;
@@ -57,7 +57,7 @@ package com.Elements
 				if(snake_vector.length>i){
 					trace("already element is there");
 				}else{
-					snake_vector[i] = new Element(0x00AAFF,1,10,10);
+					snake_vector[i] = new Element(col,1,10,10);
 				}
 				trace("dd1 snake_vector[i] data==",xml.n[i].@x,xml.n[i].@y,xml.n[i].@d)
 				snake_vector[i].direction = xml.n[i].@d;

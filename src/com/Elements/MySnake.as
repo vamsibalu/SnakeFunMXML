@@ -13,8 +13,8 @@ package com.Elements
 		
 		public static const I_GOT_FOOD:String = "igotfood";
 		
-		public function MySnake(){
-			super(false,MoveController.thisObj,Board.WIDTH,Board.HEIGHT);
+		public function MySnake(col:int){
+			super(false,MoveController.thisObj,Board.WIDTH,Board.HEIGHT,col);
 			addEventListener(Event.ADDED_TO_STAGE,addedToStage);
 		}
 		

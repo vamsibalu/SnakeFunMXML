@@ -123,6 +123,7 @@ package com.controller
 							if(alreadyExists == false){
 								var temp:PlayerDataVO = new PlayerDataVO();
 								temp.unm = namee;
+								temp.col = int(e.getClient().getAttribute("col"));
 								_remoteSnake = board.addNewSnake(temp);
 							}
 						}
@@ -133,6 +134,7 @@ package com.controller
 							board.placeFood_ByRemote(null,XML(xmlStr).f.@data);
 						}
 					}else{
+						board.mySnake.timer.start();
 						trace("dd2 updates from myself..??");
 					}
 					break;
@@ -140,13 +142,13 @@ package com.controller
 					var tempSnake:Snake;
 					trace("dd6 got ATR TT for ",namee,"Speed",changedAttr.value," on Board",Remote.playerData.unm);
 					for(var k:int = 0; k<board.allSnakes_vector.length; k++){
-						trace("dd6 ",board.allSnakes_vector[k].playerData.unm, namee);
 						if(board.allSnakes_vector[k].playerData.unm == namee){
 							tempSnake = Snake(board.allSnakes_vector[k]);
 							break;
 						}
 					}
 					tempSnake.timer.reset();
+					trace("dd6 setting delay ",Number(changedAttr.value),tempSnake.playerData.unm)
 					tempSnake.timer.delay = Number(changedAttr.value);
 					tempSnake.timer.start();
 					break
