@@ -38,7 +38,7 @@
 			}
 			
 			private function boardCreationComplete():void{
-				Remote.playerData.name = myFBookName;
+				Remote.playerData.unm = myFBookName;
 				msgController = new MsgController(myBoardComp.board);
 				moveController = new MoveController(myBoardComp);
 			}
@@ -59,6 +59,8 @@
 				//localMode = false; //HardCoded
 				
 				if(localMode == true){
+					var dt:Date = new Date();
+					myFBookName = "fb"+dt.time.toString();
 					myFBookIMG = 'images/img.jpg';
 					currentState="loggedin";
 				}else{

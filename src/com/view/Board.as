@@ -71,51 +71,56 @@ package com.view
 		}
 		
 		//SSS xx=200;yy=200;col=0xff00ff;
+		
+		public var meClient:IClient;
 		private function iJoined_AddMySnake(e:CustomEvent):void{
-			//add my snake;
-			if(e.data is PlayerDataVO){
-				Remote.getInstance().setMyFBData(baseMXML.myFBookName,baseMXML.myFBookID,baseMXML.myFBookIMG);
-				Remote.getInstance().chatRoom.sendMessage("justUpdate",true,null,"justit");
-				mySnake = new MySnake();
-				mySnake.playerData = e.data;
+			for each (var client2:IClient in Remote.getInstance().chatRoom.getOccupants()) {
+				if(client2.isSelf()){
+					meClient = client2;
+				}
+			}
+			
+			mySnake = new MySnake();
+			mySnake.playerData = e.data;
+			Remote.getInstance().setMyFBData(baseMXML.myFBookName,baseMXML.myFBookID,baseMXML.myFBookIMG);
+			Remote.getInstance().chatRoom.sendMessage("justUpdate",true,null,"justit");
+			Remote.getInstance().chatRoom.sendMessage(CustomEvent.IJOINED,true,null,e.data.getStr());
+		}
+		
+		public function iJoinedRemote(me:Boolean,pData:PlayerDataVO):void{
+			trace("dd6 iJoinedRemote=",pData.unm);
+			if(me == true){
 				mySnake.addEventListener(MySnake.I_GOT_FOOD,MoveController.getInstance().tellToController_MYSnakeGotFood);
 				Remote.getInstance().chatRoom.addMessageListener(MsgController.ADDFOOD_AT,placeFood_ByRemote);
 				mySnake.addEventListener(CustomEvent.MY_KEY_DATA_TO_SEND,MoveController.getInstance().tellToController_ToSendDirections);
 				addChild(mySnake);
 				allSnakes_vector.push(mySnake);
 				inComingChatMsg = inComingChatMsg + "You joined the chat.\n";
-				trace("dd1 iJoined_AddMySnake my name",mySnake.playerData.name);
-				for each (var client2:IClient in Remote.getInstance().chatRoom.getOccupants()) {
-					if(client2.isSelf()){
-						client2.setAttribute(MsgController.ATR_TT,"400");
-						trace("dd6 set First SPEED Default",Remote.playerData.name);
-					}
+				var tempList:int = 0;
+				for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
+					tempList++;
+				}
+				if(tempList>1){
+					
+				}else{
+					Board.IFirst = true;
+					//MsgController.getInstance().startRemoteTiming();
+					MoveController.getInstance().placeApple(mySnake.snake_vector,false);
 				}
 			}else{
-				var roomEvent:RoomEvent = RoomEvent(e.data2);
-				var nameee:String = roomEvent.getClient().getAttribute("unm");
-				inComingChatMsg = inComingChatMsg + nameee + " joined the chat.\n";
-				var tempPlayer:PlayerDataVO = new PlayerDataVO();
-				tempPlayer.name = nameee;
-				addNewSnake(tempPlayer);
-				trace("dd1 somebody joined his name=",tempPlayer.name);
-				//update my snake so he know about me...
-				for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
-					if(client.isSelf()){
-						client.setAttribute(MsgController.ATR_SS,mySnake.currentStatusOfMySnake(true));
-						trace("dd1 did setAttributes of mysnake");
-					}
-				}
+				addNewSnake(pData);
+				inComingChatMsg = inComingChatMsg + pData.unm + " joined the chat.\n";
+				meClient.setAttribute(MsgController.ATR_SS,mySnake.currentStatusOfMySnake(true));
 			}
 		}
 		
 		public function clientLeftRemoveSnake(cName:String):void{
 			for(var i:int = 0; i<allSnakes_vector.length; i++){
-				if(allSnakes_vector[i].playerData.name == cName){
+				if(allSnakes_vector[i].playerData.unm == cName){
 					var removedSnake:Snake = allSnakes_vector.splice(i,1)[0];
 					if(removedSnake.parent){
 						removeChild(removedSnake);
-						trace("dd1 removed Snake for",removedSnake.playerData.name);
+						trace("dd1 removed Snake for",removedSnake.playerData.unm);
 					}
 				}
 			}
@@ -127,7 +132,7 @@ package com.view
 					for each (var client:IClient in Remote.getInstance().chatRoom.getOccupants()) {
 						if(client.isSelf()){
 							client.setAttribute(MsgController.ATR_TT,"30");
-							trace("dd6 set setAttribute SPEED UP 100",Remote.playerData.name);
+							trace("dd6 set setAttribute SPEED UP 100",Remote.playerData.unm);
 						}
 					}
 					downed = true;
@@ -138,7 +143,7 @@ package com.view
 					for each (var client2:IClient in Remote.getInstance().chatRoom.getOccupants()) {
 						if(client2.isSelf()){
 							client2.setAttribute(MsgController.ATR_TT,"200");
-							trace("dd6 set BAck SPEED Default",Remote.playerData.name);
+							trace("dd6 set BAck SPEED Default",Remote.playerData.unm);
 						}
 					}
 				}
@@ -166,7 +171,7 @@ package com.view
 			tempRemoteSnake.playerData = playerData;
 			addChild(tempRemoteSnake);
 			allSnakes_vector.push(tempRemoteSnake);
-			trace("ddd addNewSnake in Board  for player=",playerData.name," allSnakes.length=",allSnakes_vector.length);
+			trace("ddd addNewSnake in Board  for player=",playerData.unm," allSnakes.length=",allSnakes_vector.length);
 			return tempRemoteSnake;
 		}
 	}

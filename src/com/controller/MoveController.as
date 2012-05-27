@@ -35,7 +35,7 @@ package com.controller
 			if (classCount>1) {
 				throw new Error("Error:Only Instance Allow Bala..Use MoveController.getInstance() instead of new.");
 			}
-			Remote.getInstance().addEventListener(Remote.SUMBODY_BEFORE_YOU,checkForBoforeYou);
+			//Remote.getInstance().addEventListener(Remote.SUMBODY_BEFORE_YOU,checkForBoforeYou);
 		}
 		
 		private function checkForBoforeYou(e:CustomEvent):void{
@@ -59,28 +59,28 @@ package com.controller
 		public function tellToController_MYSnakeGotFood(e:Event):void{
 			//update my snake so everybody know about me...
 			if(Remote.getInstance().foodData.fname == Remote.getInstance().chatRoom.getAttribute("ff")){
-				trace("dd5 you deserve food..",Remote.getInstance().chatRoom.getAttribute("ff")," you",Remote.playerData.name);
+				trace("dd5 you deserve food..",Remote.getInstance().chatRoom.getAttribute("ff")," you",Remote.playerData.unm);
 				view.board.mySnake.iGotFoodAddMyElement();
 				updateMySnake_isSlef();
 				placeApple(view.board.mySnake.snake_vector,true);
 			}else{
-				trace("dd5 food",Remote.getInstance().chatRoom.getAttribute("ff")," somebody already taken...you can't w8 ra ",Remote.playerData.name)
+				trace("dd5 food",Remote.getInstance().chatRoom.getAttribute("ff")," somebody already taken...you can't w8 ra ",Remote.playerData.unm)
 			}
 		}
 		
 		public function tellToController_Snake(data:PlayerDataVO):void{
 			for(var i:int = 0; i<view.board.allSnakes_vector.length; i++){
-				if((view.board.allSnakes_vector[i].playerData.name == data.name) && (view.board.allSnakes_vector[i] is RemoteSnake)){
-					trace("ddd modifying remoteSnake for",data.name);
+				if((view.board.allSnakes_vector[i].playerData.unm == data.unm) && (view.board.allSnakes_vector[i] is RemoteSnake)){
+					trace("ddd modifying remoteSnake for",data.unm);
 					break;
 				}
-				trace("ddd allSnakes_vector[i].playerData.name",view.board.allSnakes_vector[i].playerData.name," e.data.name=",data.name," allSnakes_vector.length=",view.board.allSnakes_vector.length)
+				trace("ddd allSnakes_vector[i].playerData.name",view.board.allSnakes_vector[i].playerData.unm," e.data.name=",data.unm," allSnakes_vector.length=",view.board.allSnakes_vector.length)
 			}
 		}
 		
 		public function tellToController_GotDirections(senderName:String,msg:String):void{
 			for(var i:int = 0; i<view.board.allSnakes_vector.length; i++){
-				if((view.board.allSnakes_vector[i].playerData.name == senderName) && (view.board.allSnakes_vector[i] is RemoteSnake)){
+				if((view.board.allSnakes_vector[i].playerData.unm == senderName) && (view.board.allSnakes_vector[i] is RemoteSnake)){
 					trace("ddd modifying remoteSnake Directions for",senderName);
 					RemoteSnake(view.board.allSnakes_vector[i]).directionChanged(msg);
 					break;
@@ -107,7 +107,8 @@ package com.controller
 			}
 		}
 		
-		private function placeApple(snake_vector:Vector.<Element>,caught:Boolean = true):void{
+		//first time board will create in IFirst = true
+		public function placeApple(snake_vector:Vector.<Element>,caught:Boolean = true):void{
 			trace("dd5 placeApple")
 			if(apple == null){
 				apple = new Element(0xFF0000,1,10, 10);

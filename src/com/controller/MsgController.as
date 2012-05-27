@@ -61,6 +61,7 @@ package com.controller
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_SNAKEDATA,gotMessageForSnake);
 			remote.chatRoom.addMessageListener(CustomEvent.CHAT_MESSAGE,gotMessageForChat);
 			remote.chatRoom.addMessageListener(CustomEvent.ABOUT_DIRECTION,gotMessageForDirections);
+			remote.chatRoom.addMessageListener(CustomEvent.IJOINED,iJoinedRemote);
 			
 			remote.chatRoom.addEventListener(RoomEvent.UPDATE_CLIENT_ATTRIBUTE,updateClientAttributeListener);
 			remote.addEventListener(Remote.SUMBODY_LEFT,somebodyLeft);
@@ -68,6 +69,12 @@ package com.controller
 		
 		public static function getInstance():MsgController{
 			return thisObj;
+		}
+		
+		protected function iJoinedRemote(fromClient:IClient,messageText:String):void {
+			var tempD:PlayerDataVO = new PlayerDataVO();
+			tempD.setStr(messageText);
+			board.iJoinedRemote(fromClient.isSelf(),tempD);
 		}
 		
 		protected function gotMessageForDirections(fromClient:IClient,messageText:String):void {
@@ -78,7 +85,7 @@ package com.controller
 			trace("dd1 Remote got messageText1=",messageText);
 			var tempPlayer:PlayerDataVO = new PlayerDataVO();
 			tempPlayer.setStr(messageText);
-			tempPlayer.name = fromClient.getAttribute("unm");
+			tempPlayer.unm = fromClient.getAttribute("unm");
 			trace("dd1 Remote got messageText2=",tempPlayer.getStr());
 			MoveController.getInstance().tellToController_Snake(tempPlayer);
 		}
@@ -97,17 +104,17 @@ package com.controller
 		// changes the value of a shared attribute
 		protected function updateClientAttributeListener (e:RoomEvent):void {
 			var changedAttr:Attribute = e.getChangedAttr();
+			var namee:String = e.getClient().getAttribute("unm");
 			switch (changedAttr.name){
 				case MsgController.ATR_SS:
 					var _remoteSnake:RemoteSnake;
 					if (e.getClient().isSelf() == false) {
 						var xmlStr:String = e.getClient().getAttribute(MsgController.ATR_SS);
-						var namee:String = e.getClient().getAttribute("unm");
 						trace("dd1 got changes for ",namee);
 						if(board.allSnakes_vector.length > 0){
 							var alreadyExists:Boolean = false;
 							for(var i:int = 0; i<board.allSnakes_vector.length; i++){
-								if(board.allSnakes_vector[i].playerData.name == namee){
+								if(board.allSnakes_vector[i].playerData.unm == namee){
 									alreadyExists = true;
 									_remoteSnake = RemoteSnake(board.allSnakes_vector[i]);
 									break;
@@ -115,7 +122,7 @@ package com.controller
 							}
 							if(alreadyExists == false){
 								var temp:PlayerDataVO = new PlayerDataVO();
-								temp.name = namee;
+								temp.unm = namee;
 								_remoteSnake = board.addNewSnake(temp);
 							}
 						}
@@ -130,12 +137,11 @@ package com.controller
 					}
 					break;
 				case MsgController.ATR_TT:
-					var namee:String = e.getClient().getAttribute("unm");
 					var tempSnake:Snake;
-					trace("dd6 got ATR TT for ",namee,"Speed",changedAttr.value," on Board",Remote.playerData.name);
+					trace("dd6 got ATR TT for ",namee,"Speed",changedAttr.value," on Board",Remote.playerData.unm);
 					for(var k:int = 0; k<board.allSnakes_vector.length; k++){
-						trace("dd6 ",board.allSnakes_vector[k].playerData.name, namee);
-						if(board.allSnakes_vector[k].playerData.name == namee){
+						trace("dd6 ",board.allSnakes_vector[k].playerData.unm, namee);
+						if(board.allSnakes_vector[k].playerData.unm == namee){
 							tempSnake = Snake(board.allSnakes_vector[k]);
 							break;
 						}

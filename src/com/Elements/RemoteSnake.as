@@ -52,7 +52,7 @@ package com.Elements
 		
 		public function setCurrentStatus(xmlStr:String):void{
 			var xml:XML = XML(xmlStr);
-			trace("dd1 applying setCurrentStatus",playerData.name,xml.n.length());
+			trace("dd1 applying setCurrentStatus",playerData.unm,xml.n.length());
 			for(var i:int = 0; i<xml.n.length(); i++){
 				if(snake_vector.length>i){
 					trace("already element is there");
