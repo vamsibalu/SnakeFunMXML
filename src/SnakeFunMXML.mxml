@@ -17,6 +17,7 @@
 			import com.controller.MoveController;
 			import com.controller.MsgController;
 			import com.facebook.graph.Facebook;
+			import com.model.AMF;
 			import com.model.Remote;
 			
 			import mx.controls.Alert;
@@ -35,6 +36,8 @@
 			
 			public var localMode:Boolean;
 			public var adminMode:Boolean;
+			
+			public var amf:AMF
 			
 			private function addListeners():void{
 				myinitComp.addEventListener("cc",joined);
@@ -58,6 +61,7 @@
 			}
 			
 			protected function application1_creationCompleteHandler(event:FlexEvent):void{
+				amf = new AMF();
 				trace(this.parent.parent.loaderInfo)
 				//parentApplication.url
 				var linf:String = this.parent.parent.loaderInfo.url;
@@ -75,7 +79,7 @@
 				}
 				
 				trace("calling facebook init..",this);
-				Facebook.init("404922902864346",loginHandler);//425799344104438  //237205039668370
+				Facebook.init("404922902864346",loginHandler);
 				//Alert.show("ok");
 			}
 			private var firstTime:Boolean = true;
@@ -135,7 +139,7 @@
 				  skinClass.init="skins.FBLoginButtonSkin"
 				  skinClass.joinedRoom="skins.FBLogoutButtonSkin"
 				  click.loggedin="logout()"
-				  label.loggedout="Log in" click.loggedout="login()"/>
+				  label.loggedout="Log in" click.init="login()"/>
 		<s:FormItem includeIn="init" label="NoFacebook? adminID:">
 			<s:TextInput id="admin" keyUp="admin_keyUpHandler(event)"/>
 		</s:FormItem>
