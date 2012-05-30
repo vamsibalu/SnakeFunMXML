@@ -86,13 +86,15 @@ package com.view
 			Remote.getInstance().setMyFBData(baseMXML.myFBookName,baseMXML.myFBookID,baseMXML.myFBookIMG);
 			Remote.getInstance().chatRoom.sendMessage("justUpdate",true,null,"justit");
 			Remote.getInstance().chatRoom.sendMessage(CustomEvent.IJOINED,true,null,e.data.getStr());
-			trace("dd6 iJoined_AddMySnake and send messageIJOIned")
+			trace("dd7 iJoined_AddMySnake and sending messageIJOIned in",baseMXML.myFBookName,"col=",mySnake.playerData.col);
 		}
 		
+		
 		//msgController..
-		public function iJoinedRemote(me:Boolean,pData:PlayerDataVO):void{
-			trace("dd6 iJoinedRemote=",pData.unm);
+		public function iJoinedByRemote(me:Boolean,pData:PlayerDataVO):void{
+			//trace("dd6 iJoinedRemote=",pData.unm);
 			if(me == true){
+				trace("dd7 iJoinedByRemote me=",pData.unm," in",baseMXML.myFBookName);
 				mySnake.addEventListener(MySnake.I_GOT_FOOD,MoveController.getInstance().tellToController_MYSnakeGotFood);
 				Remote.getInstance().chatRoom.addMessageListener(MsgController.ADDFOOD_AT,placeFood_ByRemote);
 				Remote.getInstance().chatRoom.addMessageListener("died",someOneDied);
@@ -105,6 +107,7 @@ package com.view
 				mySnake.timer.reset();
 				mySnake.timer.start();
 			}else{
+				trace("dd7 iJoinedByRemote Notme=",pData.unm," in",baseMXML.myFBookName);
 				addNewSnake(pData);
 				inComingChatMsg = inComingChatMsg + pData.unm + " joined the chat.\n";
 				mySnake.timer.reset();

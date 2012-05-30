@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300" creationComplete="group1_creationCompleteHandler(event)">
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="400" height="300">
 	
 	<fx:Metadata>
 		[Event(name="clsoeEvent", type="flash.events.Event")]
@@ -12,22 +12,23 @@
 			import mx.events.FlexEvent;
 			public function joined(e:Event):void{
 				if(roomName.text.length>3){
+					if(personName && personName.text.length<2){
+						Alert.show("Length should be greater than 3","Your Name Error..");
+						return;
+					}
 					dispatchEvent(new Event('cc'));
 				}else{
-					Alert.show("Length should be greater than 3 :-)","Room Name Error..");
+					Alert.show("Length should be greater than 3","Room Name Error..");
 				}
-			}
-			
-			protected function group1_creationCompleteHandler(event:FlexEvent):void
-			{
-				// TODO Auto-generated method stub
 			}
 			
 		]]>
 	</fx:Script>
 	<s:states>
 		<s:State name="initS"/>
+		<s:State name="initSL" basedOn="initS"/>
 		<s:State name="register"/>
+		<s:State name="registerL" basedOn="register"/>
 	</s:states>
 	<s:layout>
 		<s:BasicLayout/>
@@ -44,8 +45,13 @@
 					<s:Button id="jb" label="Join" label.register="Create and Join" click="joined(event)"/>
 				</s:HGroup>
 			</s:FormItem>
+			<s:FormItem label="Your Name" includeIn="registerL,initSL">
+				<s:TextInput id="personName"/>
+			</s:FormItem>
 			<s:FormItem>
-				<mx:LinkButton label="Want To Create New Room..?" label.register="Return to join your friend room" click="currentState='register'" click.register="currentState='initS'">
+				<mx:LinkButton label="Want To Create New Room..?" label.register="Return to join your friend room"
+							   click.initS="currentState='register'" click.register="currentState='initS'" 
+							   click.initSL="currentState='registerL'"  click.registerL="currentState='initSL'">
 				</mx:LinkButton>
 			</s:FormItem>
 		</s:Form>

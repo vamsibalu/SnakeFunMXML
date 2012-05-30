@@ -74,7 +74,8 @@ package com.controller
 		protected function iJoinedRemote(fromClient:IClient,messageText:String):void {
 			var tempD:PlayerDataVO = new PlayerDataVO();
 			tempD.setStr(messageText);
-			board.iJoinedRemote(fromClient.isSelf(),tempD);
+			trace("dd7 got messageText=",messageText," in ",board.baseMXML.myFBookName)
+			board.iJoinedByRemote(fromClient.isSelf(),tempD);
 		}
 		
 		protected function gotMessageForDirections(fromClient:IClient,messageText:String):void {
@@ -110,7 +111,7 @@ package com.controller
 					var _remoteSnake:RemoteSnake;
 					if (e.getClient().isSelf() == false) {
 						var xmlStr:String = e.getClient().getAttribute(MsgController.ATR_SS);
-						trace("dd1 got changes for ",namee);
+						trace("dd7 got ATR_SS changes for ",namee,"in ",board.baseMXML.myFBookName);
 						if(board.allSnakes_vector.length > 0){
 							var alreadyExists:Boolean = false;
 							for(var i:int = 0; i<board.allSnakes_vector.length; i++){
@@ -124,6 +125,7 @@ package com.controller
 								var temp:PlayerDataVO = new PlayerDataVO();
 								temp.unm = namee;
 								temp.col = int(e.getClient().getAttribute("col"));
+								trace("dd7 alreadyExists == false col=",temp.col," in =",board.baseMXML.myFBookName);
 								_remoteSnake = board.addNewSnake(temp);
 							}
 						}
