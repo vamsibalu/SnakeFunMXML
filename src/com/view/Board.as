@@ -111,8 +111,8 @@ package com.view
 				addNewSnake(pData);
 				inComingChatMsg = inComingChatMsg + pData.unm + " joined the chat.\n";
 				mySnake.timer.reset();
-				trace("dd6 updating.. ATR_SS stopped my snake");
-				meClient.setAttribute("col",String(pData.col));
+				trace("dd7 updating.. ATR_SS for",baseMXML.myFBookName);
+				meClient.setAttribute("col",String(mySnake.playerData.col));
 				meClient.setAttribute(MsgController.ATR_SS,mySnake.currentStatusOfMySnake(true));
 			}
 		}
