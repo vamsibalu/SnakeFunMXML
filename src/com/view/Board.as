@@ -186,7 +186,13 @@ package com.view
 			return tempRemoteSnake;
 		}
 		private function someOneDied(fromClient:IClient=null,messageText:String=""):void {
-			
+			var namee:String = fromClient.getAttribute("unm");
+			for(var i:int = 0; i<allSnakes_vector.length; i++){
+				if(allSnakes_vector[i].playerData.unm == namee){
+					trace("dd8 restarted snake of ",namee," in ",baseMXML.myFBookName)
+					Snake(allSnakes_vector[i]).reStartSnake();
+				}
+			}
 		}
 		private function iDiedTellToAll(e:Event):void{
 			Remote.getInstance().chatRoom.sendMessage("died",true,null,"oh");

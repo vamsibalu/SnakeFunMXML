@@ -142,7 +142,7 @@ package com.controller
 					break;
 				case MsgController.ATR_TT:
 					var tempSnake:Snake;
-					trace("dd6 got ATR TT for ",namee,"Speed",changedAttr.value," on Board",Remote.playerData.unm);
+					//trace("dd8 got ATR TT for ",namee,"Speed",changedAttr.value," on Board",Remote.playerData.unm);
 					for(var k:int = 0; k<board.allSnakes_vector.length; k++){
 						if(board.allSnakes_vector[k].playerData.unm == namee){
 							tempSnake = Snake(board.allSnakes_vector[k]);
@@ -150,7 +150,7 @@ package com.controller
 						}
 					}
 					tempSnake.timer.reset();
-					trace("dd6 setting delay ",Number(changedAttr.value),tempSnake.playerData.unm)
+					trace("dd8 Got Speed setting Time ",Number(changedAttr.value)," for=",tempSnake.playerData.unm," in ",Remote.playerData.unm)
 					tempSnake.timer.delay = Number(changedAttr.value);
 					tempSnake.timer.start();
 					break
