@@ -40,6 +40,10 @@
 					<s:Label text="{SnakeFunMXML(this.parentApplication).myFBookName}"/>
 				</s:FormItem>
 			</s:VGroup>
+			<s:RichText width="50%" height="100%" enabled="true" fontWeight="normal"
+								text="Hints:&#xd;&#xd;Invite Friends with your Room ID...&#xd;Press Ctrl to achieve speed....">
+				
+			</s:RichText>
 		</s:HGroup>
 		<s:HGroup width="100%" height="70%" verticalAlign="middle">
 			<view:Board id="board" width="85%" height="100%" creationComplete="bb_creationCompleteHandler(event)"/>

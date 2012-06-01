@@ -23,7 +23,8 @@ package com.view
 	
 	import net.user1.reactor.IClient;
 	import net.user1.reactor.RoomEvent;
-	
+	//echo ".actionScriptProperties" >> .gitignore
+	//git rm --cached .actionScriptProperties
 	public class Board extends UIComponent
 	{
 		public var mySnake:MySnake;

@@ -64,6 +64,7 @@
 			protected function application1_creationCompleteHandler(event:FlexEvent):void{
 				amf = new AMF("");
 				amf.addEventListener(AMFEvent.FORKEY,gotKey);
+				amf.addEventListener(AMFEvent.FORUSER,gotUser);
 				trace(this.parent.parent.loaderInfo)
 				//parentApplication.url
 				var linf:String = this.parent.parent.loaderInfo.url;
@@ -77,7 +78,7 @@
 					var dt:Date = new Date();
 					//myFBookName = "fb"+dt.time.toString();
 					myFBookIMG = 'images/img.jpg';
-					currentState="loggedin";
+					//currentState="loggedin";
 				}
 				
 				
@@ -125,9 +126,17 @@
 			
 			protected function admin_keyUpHandler(event:KeyboardEvent):void{
 				adminMode = true;
-				if (event.keyCode == Keyboard.ENTER && admin.text == "123") {
+				if (event.keyCode == Keyboard.ENTER && admin.text.length>1) {
+					amf.userCheck(admin.text);
+				}
+			}
+			
+			private function gotUser(e:AMFEvent):void{
+				if(e._data == true || e._data == 'true'){
 					currentState = "loggedin";
 					myinitComp.currentState = "initSL";
+				}else{
+					trace("AMF user code is not valid....")
 				}
 			}
 			
@@ -147,7 +156,7 @@
 				  skinClass.joinedRoom="skins.FBLogoutButtonSkin"
 				  click.loggedin="logout()"
 				  label.loggedout="Log in" click.init="login()"/>
-		<s:FormItem includeIn="init" label="NoFacebook? adminID:">
+		<s:FormItem includeIn="init" label="NoFacebook? Enter User passkey:">
 			<s:TextInput id="admin" keyUp="admin_keyUpHandler(event)"/>
 		</s:FormItem>
 	</s:VGroup>
